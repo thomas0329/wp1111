@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="styles.css">
+    </head>
+    <body>
+        <div id="root" class="google-meet__root">
+            <section class="google-meet__main">
+                <div class="google-meet__anchored">
+                    <div id="myself" class="google-meet__participants">
+                        <div class="google-meet__name">你</div>
+                        <img class="sticker" src="img/main_sticker.jpg">
+                        <div class="google-meet__silent_button">
+                            <img src="img/mute.png">
+                        </div>
+                        <div class="invisible_button" onclick="adjust_participants('myself')">                            
+                            <img src="img/unpin.png">                                                        
+                            <img src="img/blocks-modified.png">
+                            <img src="img/zoom-modified.png">
+                        </div>
+                    </div>
+                </div>
+                <div class="google-meet__others">
+                    <div id="one" class="google-meet__participants">
+                        <div class="google-meet__name">Alan</div>
+                        <div class="sticker">
+                            <h1>Alan</h1>
+                        </div>
+                        <div class="google-meet__silent_button">
+                            <img src="img/mute.png">
+                        </div>
+                        <div class="invisible_button" onclick="adjust_participants('one')">                            
+                            <img src="img/unpin.png">                                                        
+                            <img src="img/blocks-modified.png">
+                            <img src="img/zoom-modified.png">
+                        </div>
+                        <img class="x" src="./img/x-mark-modified.png" onclick="remove_participant('one')">
+                    </div>
+                    <div id="two" class="google-meet__participants">
+                        <div class="google-meet__name">Chris</div>
+                        <div class="sticker">
+                            <h1>Chris</h1>
+                        </div>
+                        <div class="google-meet__silent_button">
+                            <img src="img/mute.png">
+                        </div>
+                        <div class="invisible_button" onclick="adjust_participants('two')">                            
+                            <img src="img/unpin.png">                                                        
+                            <img src="img/blocks-modified.png">
+                            <img src="img/zoom-modified.png">
+                        </div>
+                        <img class="x" src="./img/x-mark-modified.png" onclick="remove_participant('two')">
+                    </div>
+                    <div id="three" class="google-meet__participants">
+                        <div class="google-meet__name">鐘揚</div>
+                       
+                        <div class="sticker">
+                            <h1>鐘揚</h1>
+                        </div>
+                        <div class="google-meet__silent_button">
+                            <img src="img/mute.png">
+                        </div>
+                        
+                        <div class="invisible_button" onclick="adjust_participants('three')">                            
+                            <img src="img/unpin.png">                                                        
+                            <img src="img/blocks-modified.png">
+                            <img src="img/zoom-modified.png">
+                        </div>
+                        <img class="x" src="./img/x-mark-modified.png" onclick="remove_participant('three')">
+                    </div>
+                    <div id="four" class="google-meet__participants">
+                        <div class="google-meet__name">NTU Surf Club</div>                        
+                        <img class="sticker" src="img/surf.jpg">                    
+                        <div class="google-meet__silent_button">
+                            <img src="img/mute.png">
+                        </div>
+                        <div class="invisible_button" onclick="adjust_participants('four')">                            
+                            <img src="img/unpin.png">                                                        
+                            <img src="img/blocks-modified.png">
+                            <img src="img/zoom-modified.png">
+                        </div>
+                        <img class="x" src="./img/x-mark-modified.png" onclick="remove_participant('four')">
+                    </div>
+                    <div id="five" class="google-meet__participants">
+                        <div class="google-meet__name">Gary</div>
+                        <div class="sticker">
+                            <h1>Gary</h1>
+                        </div>
+                        <div class="google-meet__silent_button">
+                            <img src="img/mute.png">
+                        </div>
+                        <div class="invisible_button" onclick="adjust_participants('five')">                            
+                            <img src="img/unpin.png">                                                        
+                            <img src="img/blocks-modified.png">
+                            <img src="img/zoom-modified.png">
+                        </div>
+                        <img class="x" src="./img/x-mark-modified.png" onclick="remove_participant('five')">                    
+                    </div>
+                </div>
+            </section>
+            <footer class="google-meet__footer">
+                <div id="footer_text" class="google-meet__footer_elements">
+                    凌晨四點    |   web prorgamming
+                </div>
+                <div class="google-meet__footer_elements google-meet__center_buttons">
+                    <div class="cb1">
+                        <img src="img/mute.png">
+                    </div>
+                    <div class="cb2">
+                        <img src="img/no-video.png">
+                    </div>
+                    <div class="cb3">
+                        <img src="img/hand.png">
+                    </div>
+                    <div class="cb4">
+                        <img src="img/share.png">
+                    </div>
+                    <div class="cb5">
+                        <img src="img/options.png">
+                    </div>
+                    <div class="oval">
+                        <img src="img/call.png">
+                    </div>
+                </div>
+                <div id="right_buttons" class="google-meet__footer_elements">
+                    <div>
+                        <img src="img/information-modified.png">
+                    </div>
+                    <div>
+                        <img src="img/team-modified.png">
+                    </div>
+                    <div>
+                        <img src="img/message-modified.png">
+                    </div>
+                    <div>
+                        <img src="img/shapes-modified.png">
+                    </div>
+                    <div>
+                        <img src="img/lock-modified.png">
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+        <script src="main.js"></script>
+    </body>
+</html>

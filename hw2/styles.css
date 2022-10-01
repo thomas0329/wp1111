@@ -1,0 +1,267 @@
+* {
+    box-sizing: border-box;
+}
+
+html, body{
+    height: 100%;
+    background: rgb(35, 35, 35);
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.google-meet__root{
+    height: 100%;
+}
+
+.google-meet__main{
+    height: 90%;
+    display: flex;
+    align-items: center;
+}
+
+.google-meet__footer{
+    height: 10%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.google-meet__anchored{
+    width: 70%;
+    height: 100%;
+}
+
+.google-meet__others{
+    width: 30%;
+    height: 70%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    align-content: flex-start;
+}
+
+.google-meet__anchored > div{
+    width: 100%;
+    height: 100%;
+    border-radius: 5%;
+    display: flex;
+    justify-content: space-between;
+    padding: 1em;
+    position: relative;
+}
+
+.google-meet__others > div{
+    width: 45%;
+    height: 30%;
+    background: rgb(67, 66, 61);
+    border-radius: 10%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5em;
+    position: relative;
+    margin: 0.5em;
+}
+
+.google-meet__footer_elements{
+    width: 18em;
+    height: 100%;
+}
+
+.google-meet__others .sticker{
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 4em;
+    width: 4em;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+}
+
+.google-meet__anchored > div > .sticker{
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    height: 9em;
+    width: 9em;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+}
+
+.google-meet__name{
+    color: white;
+    align-self: flex-end;
+}
+
+
+#footer_text{
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.google-meet__silent_button{
+    height: 1.5em;
+    width: 1.5em;
+    background: gray;
+    border-radius: 50%;
+}
+
+.google-meet__center_buttons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+/* cb stands for center buttons */
+
+.cb1, .cb2{
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+    background-color: red;
+}
+
+.cb3, .cb4, .cb5{
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+    background-color: gray;
+}
+
+.oval{
+    height: 2em;
+    width: 2.9em;
+    border-radius: 45%;
+    background-color: red;
+}
+
+.google-meet__silent_button, .google-meet__center_buttons > div{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#right_buttons{
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+#right_buttons > div{
+    width: 2em;
+    height: 2em;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.google-meet__silent_button img, .google-meet__footer img{
+    width: 70%;
+    height: 70%;
+}
+
+.google-meet__pin{
+    width: 4em;
+    height: 1.5em;
+    display: flex;
+    justify-content: space-between;
+    align-self: flex-end;
+}
+
+#one > .sticker{
+    background: green;
+}
+
+#two > .sticker{
+    background: rgb(198, 2, 120);
+}
+
+#three > .sticker{
+    background: rgb(0, 124, 128);
+}
+
+#five > .sticker{
+    background: rgb(153, 2, 176);
+}
+
+.google-meet__others .sticker h1{
+    transform:translate(0%,-15%);
+}
+
+.google-meet__anchored .sticker h1{
+    transform:translate(0%,35%);
+}
+
+.invisible_button img{
+    width: 20%;
+    height: 60%;
+}
+
+.invisible_button{
+    display: none;
+}
+
+/* to be conbined */
+
+.google-meet__anchored:hover
+    .invisible_button{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+
+    width: 6em;
+    height: 2em;
+    border-radius: 1em;
+    background-color: rgb(47, 46, 46, 1);
+    opacity: 0.7;
+}
+
+.google-meet__others .google-meet__participants:hover
+    .invisible_button{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+
+    width: 4em;
+    height: 1.33em;
+    border-radius: 1em;
+    background-color: rgb(47, 46, 46, 1);
+    opacity: 0.7;
+}
+
+.google-meet__anchored:hover
+    .invisible_button:hover{
+        opacity: 0.9;
+}
+
+.google-meet__others .google-meet__participants:hover
+    .invisible_button:hover{
+        opacity: 0.9;
+}
+
+.x{
+    height: 1.5em;
+    width: 1.5em;
+    position: absolute;
+    top: 0%;
+    left: 0%;
+    transform:translate(0.5em,0.5em);
+}
