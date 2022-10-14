@@ -39,7 +39,7 @@ const MineSweeper = () => {
     if(startGame == true){
         return (
             <div className='mineSweeper'>
-                {/* <Board boardSize={boardSize} mineNum={mineNum} backToHome={backToHomeOnClick}></Board> */}
+                <Board boardSize={boardSize} mineNum={mineNum} backToHome={backToHomeOnClick}></Board>
             </div>
         );
 
@@ -49,8 +49,8 @@ const MineSweeper = () => {
             <div className='mineSweeper'>
                 {/* Basic TODO: `HomePage` and `Board` will switch based on the mode of `startGame`.
                  If `startGame` is true, show `Board`; else show `HomePage` */}
-                {/* <HomePage startGameOnClick={startGameOnClick} mineNumOnChange={mineNumOnChange} boardSizeOnChange={boardSizeOnChange} 
-                mineNum={mineNum} boardSize={boardSize}></HomePage> */}
+                <HomePage startGameOnClick={startGameOnClick} mineNumOnChange={mineNumOnChange} boardSizeOnChange={boardSizeOnChange} 
+                mineNum={mineNum} boardSize={boardSize}></HomePage>
                 {/* Advanced TODO: pass all parameters into `Board` and `HomePage`*/}
                 
             </div>

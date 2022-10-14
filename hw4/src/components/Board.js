@@ -13,7 +13,6 @@ import Dashboard from './Dashboard';
 import { revealed } from '../util/reveal';
 import createBoard from '../util/createBoard';
 import React, { useEffect, useState } from 'react';
-import { set } from 'cypress/types/lodash';
 
 
 const Board = ({ boardSize, mineNum, backToHome }) => {
@@ -32,10 +31,11 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
     // Creating a board
     const freshBoard = () => {
         const newBoard = createBoard(boardSize, mineNum);
+        setBoard(newBoard.board);
+        setMineLocations(newBoard.mineLocations);
         // Basic TODO: Use `newBoard` created above to set the `Board`.
-        // setBoard(newBoard.board);
-        // setMineLocations(newBoard.mineLocations);
         // Hint: Read the definition of those Hook useState functions and make good use of them.
+
     }
 
     const restartGame = () => {
@@ -72,17 +72,19 @@ const Board = ({ boardSize, mineNum, backToHome }) => {
     return (
         <div className='boardPage' >
             <div className='boardWrapper' >
-                {/* <h1>This is the board Page!</h1>  This line of code is just for testing. Please delete it if you finish this function. */}
-                <div className='boardContainer'></div>
+                 {/* <h1>This is the board Page!</h1>  This line of code is just for testing. Please delete it if you finish this function. */}
+
                 {/* Advanced TODO: Implement Modal based on the state of `gameOver` */}
 
                 {/* Basic TODO: Implement Board 
-                Useful Hint: The board is composed of BOARDSIZE*BOARDSIZE of Cell (2-dimension). 
+                Useful Hint: The board is composed of BOARDSIZE*BOARDSIZE of Cell (2-dimention). 
                 So, nested 'map' is needed to implement the board.
                 Reminder: Remember to use the component <Cell> and <Dashboard>. 
                 See Cell.js and Dashboard.js for detailed information. */}
-                {/* <Dashboard></Dashboard> */}
-
+                <div className='boardContainer'>
+                    <Dashboard></Dashboard>
+                    
+                </div>
 
                 
             </div>

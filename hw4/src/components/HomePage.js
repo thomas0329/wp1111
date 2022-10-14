@@ -23,7 +23,7 @@ const HomePage = ({ startGameOnClick, mineNumOnChange, boardSizeOnChange, mineNu
     <div className='HomeWrapper'>
       <p className='title'>MineSweeper</p>
       {/* Basic TODO:  Implemen start button */}
-      {/* <button className='btn' onClick={startGameOnClick}>start game</button> */}
+      <button className='btn' onClick={startGameOnClick}>start game</button>
 
       
       {/* Advanced TODO: Implementation of Difficult Adjustment
