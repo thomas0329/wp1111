@@ -39,7 +39,7 @@ const MineSweeper = () => {
     if(startGame == true){
         return (
             <div className='mineSweeper'>
-                <Board boardSize={boardSize} mineNum={mineNum} backToHome={backToHomeOnClick}></Board>
+                <Board startGame={startGame} boardSize={boardSize} mineNum={mineNum} backToHome={backToHomeOnClick}></Board>
             </div>
         );
 

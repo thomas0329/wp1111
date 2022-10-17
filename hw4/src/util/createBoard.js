@@ -76,7 +76,10 @@ export default (boardSize, mineNum) => {
         }
     }
 
-    //  Testing: printBoard()
-
+    //  Testing: 
+    printBoard();
+    // console.log('mineLocations');
+    // console.log(mineLocations);
+    // console.log(mineLocations.length)
     return { board, mineLocations };
 };

@@ -1,19 +1,12 @@
 # HW4 MineSweeper
-![](https://i.imgur.com/pfsPBRR.png)
-## [Demo Video](https://www.youtube.com/watch?v=mDx4bi-rA-Q)
 
+功能：達成基本功能
 
-## Structure
-![](https://i.imgur.com/noioyH8.png)
-
-## File Structure
-![](https://i.imgur.com/LQWxcXW.png)
-
-## Our Rules of MineSweeper
-![](https://i.imgur.com/1Di60VR.png)
-
-## Structure of HTML
-![](https://i.imgur.com/18fudrr.png)
-![](https://i.imgur.com/nLgxGL2.png)
-![](https://i.imgur.com/5TwVv4A.png)
-![](https://i.imgur.com/BvhORok.png)
+- 透過按左鍵reveal Cell
+- 透過按右鍵插旗子
+    - 若此 Cell 已經被按開 (revealed) ，則不能再插上旗子
+    - 若此 Cell 沒有被插上旗子，且沒有被按開，可以插上旗子
+    - 若此 Cell 已經被插上旗子，必須拔掉旗子
+- 若踩到地雷，遊戲結束，畫面會停在那邊，請重新整理頁面以重新開始遊戲
+- 如果你贏了，會顯示 win 的 modal。請重新整理頁面以重新開始遊戲。
+- 測試時可以開啟 console 查看 current board
