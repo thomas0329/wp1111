@@ -11,7 +11,13 @@ const LogIn = ({me, setName, onLogin}) => {
             value={me}
             onChange={(e) => setName(e.target.value)}
             enterButton="Sign In"
-            onSearch={(name) => {onLogin(name);}}
+            onSearch={(name) => {
+                console.log("on search triggered");
+                console.log('name');
+                console.log(name);
+                onLogin(name);}}
         />
     )
 }
+
+export default LogIn;
