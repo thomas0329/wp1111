@@ -1,3 +1,5 @@
+import styled from 'styled-components';
+import { Tag } from 'antd';
 
 const StyledMessage = styled.div`
     display: flex;
@@ -16,9 +18,9 @@ const StyledMessage = styled.div`
     }
 `;
 
-const Message = ({ name, message}) => {
+const Message = ({ isMe, name, message}) => {
     return (
-      <StyledMessage>
+      <StyledMessage isMe={isMe}>
         <p><Tag color="blue">{name}</Tag> {message}</p>
       </StyledMessage>
     );

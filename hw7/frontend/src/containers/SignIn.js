@@ -1,9 +1,9 @@
 import AppTitle from '../components/Title';
 import LogIn from '../components/LogIn';
-import useChat from './hooks/useChat';
+import { useChat } from './hooks/useChat';
 
 const SignIn = () => {
-    const { me, setMe, setSignedIn, displayStatus, signedIn } = useChat();
+    const { me, setMe, displayStatus, signedIn, setSignedIn } = useChat();
     const handleLogin = (name) => {
     if (!name)
       displayStatus({
@@ -12,9 +12,7 @@ const SignIn = () => {
       });
     else{
       setSignedIn(true);
-      console.log("signed in set to true");
     }
-    console.log(signedIn);
   }
   return ( 
     <>

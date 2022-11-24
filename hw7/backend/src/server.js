@@ -16,7 +16,7 @@ mongo.connect();
 db.once('open', () => { console.log("MongoDB connected!");
     wss.on('connection', (ws) => {
         // Define WebSocket connection logic
-        // wsConnect.initData(ws);
+        wsConnect.initData(ws);
         ws.onmessage = wsConnect.onMessage(ws);
     });
 });

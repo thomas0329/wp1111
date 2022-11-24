@@ -1,9 +1,10 @@
 import '../App.css'
-import { Button, Input, message, Tag } from 'antd'
+import { Button, Input, message, Tag, Tabs } from 'antd'
 import { useState, useEffect, useRef } from "react";
-import useChat from './hooks/useChat';
+import { useChat } from './hooks/useChat';
 import styled from 'styled-components';
 import Title from '../components/Title';
+import Message from '../components/Message';
 
 const ChatBoxesWrapper = styled.div`
   width: 100%;
@@ -33,15 +34,16 @@ function ChatRoom() {
       <p style={{ color: '#ccc' }}> No messages... </p>
     ):(
       messages.map(({ name, body }, i) => (
-        <p className="App-message" key={i}>
-          <Tag color="blue">{name}</Tag> {body}
-        </p>
+        // <p className="App-message" key={i}>
+        //   <Tag color="blue">{name}</Tag> {body}
+        // </p>
+        <Message name={name} message={body} isMe={(name === me)}/>
       ))
     )
   )
 
-  useEffect(() => {
-    displayStatus(status)}, [status])
+  // useEffect(() => {
+  //   displayStatus(status)}, [status])
 
   const scrollToBottom = () => {
     msgFooter.current?.scrollIntoView
@@ -51,6 +53,7 @@ function ChatRoom() {
     scrollToBottom();
     setMsgSent(false);
   }, [msgSent]);
+
   return (
     <>
       <Title name={me}>

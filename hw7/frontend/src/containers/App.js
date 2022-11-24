@@ -1,7 +1,7 @@
 import '../App.css'
 import { Button, Input, message, Tag } from 'antd'
 import { useState, useEffect, useRef } from "react";
-import useChat from './hooks/useChat';
+import { useChat } from './hooks/useChat';
 import styled from 'styled-components';
 import Title from '../components/Title';
 import ChatRoom from './ChatRoom';
@@ -17,28 +17,32 @@ const Wrapper = styled.div`
   margin: auto;
 `;
 
-// const App =  () => {
-//   const {status, me, signedIn, displayStatus} = useChat();
+const App = () => {
+  const {status, me, signedIn, displayStatus} = useChat();
+  useEffect(() => {
+    displayStatus(status)}, [status]
+  );
+  return(
+    <Wrapper>
+      {signedIn? <ChatRoom/> : <SignIn me={me}/>}
+    </Wrapper>
+  )
+}
+
+// by TA
+
+// const App = () => {
+//   const { status, me, displayStatus } = useChat()
+//   const [ signedIn, setSignedIn ]  = useState(false)
 //   useEffect(() => {
-//     displayStatus(status)}, [status]
-//   );
-//   // console.log("signedin at")
-//   console.log(signedIn);
-//   return(
-//     <Wrapper>
-//       {signedIn? <ChatRoom/> : <SignIn me={me}/>}
+//     displayStatus(status)}, [status, displayStatus])
+  
+//   return (
+//     <Wrapper> 
+//       {signedIn? <ChatRoom /> : 
+//       <SignIn setSignedIn={setSignedIn}/>} 
 //     </Wrapper>
 //   )
 // }
-
-const App = () => {
-    const { status, signedIn, displayStatus } = useChat()
-    useEffect(() => {
-      displayStatus(status)}, [status, displayStatus])
-    console.log("entered app");
-    return (
-      <Wrapper> {signedIn? <ChatRoom />: <SignIn />} </Wrapper>
-  )
-}
 
 export default App;
