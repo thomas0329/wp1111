@@ -49,6 +49,7 @@ const ChatProvider = (props) => {
     }, [me, signedIn]);
     
     const displayStatus = (s) => {
+        console.log(s);
         if (s.msg) {
           const { type, msg } = s;
           const content = {
@@ -67,12 +68,6 @@ const ChatProvider = (props) => {
         await client.send(JSON.stringify(data));
     };
     const sendMessage = (payload) => {
-        // update messages and status (fake)
-        // setMessages([...messages, payload]);
-        // setStatus({
-        //     type: "success",
-        //     msg: "Message sent." });
-        console.log(payload);
         sendData(['input', payload]);
     }
     const clearMessages = () => {
