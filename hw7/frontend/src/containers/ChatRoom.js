@@ -1,5 +1,5 @@
 import '../App.css'
-import { Button, Input, message, Tag, Tabs } from 'antd'
+import { Button, Input, message, Tag, Tabs } from 'antd';
 import { useState, useEffect, useRef } from "react";
 import { useChat } from './hooks/useChat';
 import styled from 'styled-components';
@@ -106,6 +106,7 @@ function ChatRoom() {
     <>
       <Title name={me} />
       <ChatBoxesWrapper
+        type='editable-card'
         onChange={(key) => {
           setActiveKey(key);
           extractChat(key); // from backend
