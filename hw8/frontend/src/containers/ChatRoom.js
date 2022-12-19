@@ -5,6 +5,8 @@ import {useChat} from './hooks/useChat';
 import Title from '../components/Title.js';
 import Message from '../components/Message';
 import ChatModal from '../components/ChatModal';
+import { CHATBOX_QUERY, CREATE_CHATBOX_MUTATION,
+	MESSAGE_SUBSCRIPTION } from "../graphql";
 
 const ChatBoxesWrapper = styled(Tabs)`
     width: 100%;
@@ -28,7 +30,8 @@ const FootRef = styled.div`
 `;
 
 const ChatRoom = () => {
-    const {me, messages, sendMessage, startChat, displayStatus} = useChat();
+    const {me, messages, sendMessage, createChatBoxMutation, 
+			chatBoxQuery, subscribeToMore, displayStatus} = useChat();
     const [chatBoxes, setChatBoxes] = useState([]);
     const [activeKey, setActiveKey] = useState('');
     const [msg, setMsg] = useState('');
@@ -61,14 +64,17 @@ const ChatRoom = () => {
     }
 
     const createChatBox = (friend) => {
+				console.log('create chatbox called!');
         // some function: returns true if an element fits the description
         if (chatBoxes.some(({key}) => key === friend)) {
             throw new Error(friend + "'s chat box has already opened.");
         }
         const chat = extractChat(friend);
+				console.log("extract chat finished!");
         setChatBoxes([...chatBoxes,
         {label: friend, children: chat, key: friend}]);
-        startChat(me, friend);
+
+        // startChat(me, friend);
         setMsgSent(true);
         return friend;
     };
@@ -78,11 +84,14 @@ const ChatRoom = () => {
         const newChatBoxes = chatBoxes.filter(({key}) => key !== targetKey);
         setChatBoxes(newChatBoxes);
     }
- 
+
     const scrollToBottom = () => {
         msgFooter.current?.scrollIntoView();
         // msgFooter.current?.scrollIntoView({behavior: "smooth", block: "start"});
     };
+
+		
+
 
     useEffect(() => {
         scrollToBottom();
@@ -110,13 +119,11 @@ const ChatRoom = () => {
                     tabBarStyle={{height: '36px'}}
                     type='editable-card'
                     activeKey={activeKey}
-                    // onChange={() => console.log('chatboxes wrapper onchange')}
                     onChange={(key) => {
                     
                         setActiveKey(key);
                         extractChat(key);
-                        // console.log('CHATBOXESWRAPPER ONCHANGE');
-                        startChat(me,key);
+                        // startChat(me,key);
                     }}
                     onEdit={(targetKey, action) => {
                         if (action === 'add') setModalOpen(true);
@@ -128,10 +135,36 @@ const ChatRoom = () => {
                 />
                 <ChatModal
                     open={modalOpen}
-                    onCreate={({name}) => {
-                        setActiveKey(createChatBox(name));
-                        extractChat(name);
-                        setModalOpen(false);
+                    // onCreate={({name}) => {
+                    //     setActiveKey(createChatBox(name));
+                    //     extractChat(name);
+                    //     setModalOpen(false);
+                    // }}
+                    onCreate={async ({ name }) => {
+                      await createChatBoxMutation({
+                        variables: { name1: me, name2: name }
+                      });
+											setActiveKey(createChatBox(name));
+                    	await chatBoxQuery({
+												variables: { name1: me, name2: name }
+											});
+											extractChat(name);
+											
+										// 	try {
+										// 		subscribeToMore({
+										// 				document: MESSAGE_SUBSCRIPTION,
+										// 				variables: { from: me, to: friend },
+										// 				updateQuery: (prev, { subscriptionData }) => {
+										// 						if (!subscriptionData.data) return prev;
+										// 						const newMessage = subscriptionData.data.message.message;
+										// 						return {
+										// 								chatBox: {
+										// 										messages: [...prev.chatBox.messages, newMessage],
+										// 								}};
+										// 				}});
+										// } catch (e) {}
+
+											setModalOpen(false);
                     }}
                     onCancel={() => {
                         setModalOpen(false);

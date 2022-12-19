@@ -1,10 +1,11 @@
+import { makeName } from "./utilities";
+
 const Query = {
-  chatbox: async (parent, { name }, { ChatBoxModel }) => {
-    console.log(name);
-    console.log(ChatBoxModel);
-    let box = await ChatBoxModel.findOne({ name });
+  chatbox: async (parent, { name1, name2 }, { ChatBoxModel }) => {
+    const chatBoxName = makeName(name1, name2);
+    let box = await ChatBoxModel.findOne({ name: chatBoxName });
     if (!box)
-      box = await new ChatBoxModel({ name }).save();
+      box = await new ChatBoxModel({ name: chatBoxName }).save();
     return box;
   }
 };

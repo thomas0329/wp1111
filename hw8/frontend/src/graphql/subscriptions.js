@@ -1,17 +1,10 @@
 import { gql } from '@apollo/client';
 
-export const POSTS_SUBSCRIPTION = gql`
-  subscription {
-    post {
-      mutation
-      data {
-        title
-        body
-        author {
-          name
-        }
-        published
-      }
+export const MESSAGE_SUBSCRIPTION = gql`
+  subscription message($from: String!, $to: String!){
+    message(from: $from, to: $to){
+      sender
+      body
     }
   }
 `;

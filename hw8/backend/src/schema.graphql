@@ -1,5 +1,5 @@
 type Query {
-  chatbox(name: String!): ChatBox!
+  chatbox(name1: String!, name2: String!): ChatBox!
 }
 
 type ChatBox {

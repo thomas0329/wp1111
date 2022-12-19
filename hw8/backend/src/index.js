@@ -4,7 +4,7 @@ import mongo from './mongo'
 
 import server from './server'
 
-mongo.connect()
+mongo.connect();
 
 // const app = express();
 // const server = http.createServer(app)
