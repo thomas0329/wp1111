@@ -12,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 
 import dayjs from '../utils/day';
 import ItemFormModal from './ItemFormModal';
+import { v4 as uuidv4 } from 'uuid';
 
 function Row({
   item, updateItem, deleteItem,
@@ -40,10 +41,22 @@ function Row({
   };
 
   const handleSubmitEdit = (formData) => {
+    // createItem({
+    //   variables: {
+    //     input: {
+    //       id: uuidv4(),
+    //       ...formData,
+    //     },
+    //   },
+    // });
+    console.log(formData);
     updateItem({
       variables: {
         // TODO 4 Use `updateItem` and pass the correct variables
-
+        input: {
+          id: item.id,
+          ...formData,
+        },
         // TODO End
         onError: (err) => {
           // eslint-disable-next-line no-console

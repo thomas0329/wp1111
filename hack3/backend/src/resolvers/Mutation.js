@@ -21,6 +21,8 @@ const Mutation = {
         },
       }
     );
+    console.log('item');
+    console.log(item);
     const newItem = {
       id: input.id ?? item.id,
       name: input.name ?? item.name,
@@ -36,7 +38,20 @@ const Mutation = {
   },
   // TODO 5.2 Define the itemDelete mutation resolver
   // TODO 6.3 Publish itemDeleted
-
+  deleteItem: async () => {
+    const item = await itemModel.findOneAndUpdate(
+      { id: input.id },
+      {
+        $set: {
+          name: input.name,
+          amount: input.amount,
+          category: input.category,
+          date: input.date,
+          description: input.description,
+        },
+      }
+    );
+  }
   // TODO 5.2 End
   // TODO 6.3 End
 
