@@ -23,7 +23,7 @@ const StyledMessage = styled.div`
 const Message = ({name, isMe, message}) => {
     return (
         <StyledMessage isMe={isMe}>
-            <p><Tag color="blue">{name}</Tag>{message}</p>
+            <p><Tag color="yellow">{name}</Tag>{message}</p>
         </StyledMessage>
     );
 };

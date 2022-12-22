@@ -32,7 +32,7 @@ const httpLink = new HttpLink({
 //   options: { reconnect: true },
 // });
 const wsLink = new GraphQLWsLink(createClient({
-  url: 'ws://localhost:4000/subscriptions',
+  url: 'ws://localhost:4000/graphql',
   options: {
     lazy: true,
   },

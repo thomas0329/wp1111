@@ -13,11 +13,11 @@ const ChatContext = createContext({
     me: "",
     signedIn: false,
     messages: [],
-    createChatBoxMutation: () => {},
+    friend: '',
+    setFriend: () => {},
+    startChat: () => {},
     chatBoxQuery: () => {},
     subscribeToMore: () => {},
-    sendMessage: () => {},
-    clearMessage: () => {},
     displayStatus: () => {},
 });
 
@@ -26,16 +26,29 @@ const ChatProvider = (props) => {
     const [me, setMe] = useState(savedMe || '');
     const [signedIn, setSignedIn] = useState(false);
     const [messages, setMessages] = useState([]);
+    const [friend, setFriend] = useState('');
 
     const [ chatBoxQuery, { data, loading, subscribeToMore }]
         = useLazyQuery(CHATBOX_QUERY, { // returns callback func
         // variables: {
         //     name1: me,
         //     name2: friend,
-        // },
+        // }
     });
     
+    useEffect(() => {
+        console.log("Data update")
+        console.log(data)
+        if (data)
+            setMessages(data.chatbox.messages)
+    }, [data]);
+
+    useEffect(() => {
+        console.log("Message update")
+        console.log(messages)
+    }, [messages]);
     // useEffect(() => {
+    //     console.log('useEffect subscribeToMore called!');
     //     try {
     //         subscribeToMore({
     //             document: MESSAGE_SUBSCRIPTION,
@@ -48,10 +61,10 @@ const ChatProvider = (props) => {
     //                         messages: [...prev.chatBox.messages, newMessage],
     //                     }};
     //             }});
-    //     } catch (e) {}
-    // }, [subscribeToMore]);
+    //     } catch (e) { console.error(e); }
+    // }, [subscribeToMore, friend]);
 
-    const [createChatBoxMutation] = useMutation(CREATE_CHATBOX_MUTATION);
+    const [startChat] = useMutation(CREATE_CHATBOX_MUTATION);
 
     
     // what should be done if client recieves message
@@ -104,11 +117,13 @@ const ChatProvider = (props) => {
             value = {{
                 status,
                 me,
+                friend,
+                setFriend,
                 signedIn,
                 messages,
                 setMe,
                 setSignedIn,
-                createChatBoxMutation,
+                startChat,
                 chatBoxQuery,
                 subscribeToMore,
                 // sendMessage,
