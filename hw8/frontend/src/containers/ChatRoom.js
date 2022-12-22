@@ -69,13 +69,11 @@ const ChatRoom = () => {
     }
 
     const createChatBox = (friend) => {
-				// console.log('create chatbox called!');
         // some function: returns true if an element fits the description
         if (chatBoxes.some(({key}) => key === friend)) {
             throw new Error(friend + "'s chat box has already opened.");
         }
         const chat = extractChat(friend);
-				// console.log("extract chat finished!");
         setChatBoxes([...chatBoxes,
         {label: friend, children: chat, key: friend}]);
 
@@ -96,7 +94,6 @@ const ChatRoom = () => {
     };
 
 		
-
     useEffect(() => {
         scrollToBottom();
         setMsgSent(false);
@@ -125,7 +122,6 @@ const ChatRoom = () => {
                     type='editable-card'
                     activeKey={activeKey}
                     onChange={(key) => {
-                    
                         setActiveKey(key);
                         extractChat(key);
                         // startChat(me,key);

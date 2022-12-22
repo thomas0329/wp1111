@@ -37,16 +37,17 @@ const ChatProvider = (props) => {
     });
     
     useEffect(() => {
-        console.log("Data update")
-        console.log(data)
+        // console.log("Data update")
+        // console.log(data)
         if (data)
             setMessages(data.chatbox.messages)
     }, [data]);
 
-    useEffect(() => {
-        console.log("Message update")
-        console.log(messages)
-    }, [messages]);
+    // useEffect(() => {
+    //     console.log("Message update")
+    //     console.log(messages)
+    // }, [messages]);
+
     // useEffect(() => {
     //     console.log('useEffect subscribeToMore called!');
     //     try {
