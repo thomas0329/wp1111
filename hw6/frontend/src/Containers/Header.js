@@ -16,15 +16,13 @@ const Wrapper = styled.section`
 `;
 
 const Header = () => {
-  const { addRegularMessage } = useScoreCard();
-  // const { setMessages } = ScoreCardProvider()
+  const { addRegularMessage, deletenAddRegularMessage } = useScoreCard();
 
   const handleClear = async () => {
     const {
       data: { message }
     } = await axios.delete('/cards');
-    // setMessage([])
-    addRegularMessage(message);
+    deletenAddRegularMessage(message);
   };
 
   return (

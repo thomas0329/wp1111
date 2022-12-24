@@ -6,7 +6,7 @@ const ERROR_MESSAGE_COLOR = '#fb3640';
 
 const ScoreCardContext = createContext({
   messages: [],
-
+  deletenAddRegularMessage: () => {},
   addCardMessage: () => {},
   addRegularMessage: () => {},
   addErrorMessage: () => {},
@@ -29,6 +29,11 @@ const ScoreCardProvider = (props) => {
       ...ms.map((m) => makeMessage(m, REGULAR_MESSAGE_COLOR)),
     ]);
   };
+  const deletenAddRegularMessage = (...ms) => {
+    setMessages([
+      ...ms.map((m) => makeMessage(m, REGULAR_MESSAGE_COLOR)),
+    ]);
+  };
 
   const addErrorMessage = (message) => {
     setMessages([...messages, makeMessage(message, ERROR_MESSAGE_COLOR)]);
@@ -41,7 +46,7 @@ const ScoreCardProvider = (props) => {
         addCardMessage,
         addRegularMessage,
         addErrorMessage,
-        // setMessages
+        deletenAddRegularMessage
       }}
       {...props}
     />
