@@ -1,1 +1,10 @@
-{}
+{
+    "scripts": {
+        "start": "cd frontend && yarn start",
+        "server": "cd backend && yarn server"
+    },
+    "dependencies": {
+        "@apollo/client": "^3.7.3",
+        "graphql": "^16.6.0"
+    }
+}
