@@ -15,7 +15,9 @@ const SIGNUP_MUTATION = gql`
       password: $password
       name: $name
     ) {
-      token
+      id
+      name
+      email
     }
   }
 `;
@@ -26,7 +28,9 @@ const LOGIN_MUTATION = gql`
     $password: String!
   ) {
     login(email: $email, password: $password) {
-      token
+      id
+      name
+      email
     }
   }
 `;
@@ -41,18 +45,21 @@ const Login = () => {
     name: ''
   });
 
-  const [login] = useMutation(LOGIN_MUTATION, {
+  const [login, { login_data }] = useMutation(LOGIN_MUTATION, {
     variables: {
       email: formState.email,
       password: formState.password
     },
     onCompleted: ({ login }) => {
       localStorage.setItem(AUTH_TOKEN, login.token);
-      navigate('/');
+      console.log('login oncompleted');
+      navigate('/template');
     }
   });
+  console.log('login_data');
+  console.log(login_data);
   
-  const [signup] = useMutation(SIGNUP_MUTATION, {
+  const [signup, { signup_data }] = useMutation(SIGNUP_MUTATION, {
     variables: {
       name: formState.name,
       email: formState.email,
@@ -60,7 +67,8 @@ const Login = () => {
     },
     onCompleted: ({ signup }) => {
       localStorage.setItem(AUTH_TOKEN, signup.token);
-      navigate('/');
+      console.log('signup oncompleted');
+      navigate('/template');
     }
   });
 

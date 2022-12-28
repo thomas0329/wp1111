@@ -31,6 +31,7 @@ const Mutation = {
 		if (!valid) {
 			throw new Error('Invalid password');
 		}
+		console.log('successfully logged in');
 		return user;
 	}
 };
