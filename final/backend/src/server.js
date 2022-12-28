@@ -2,6 +2,7 @@ import { GraphQLServer, PubSub } from 'graphql-yoga';
 import Query from './resolvers/Query';
 import Mutation from './resolvers/Mutation';
 import Subscription from './resolvers/Subscription';
+import UserModel from './models/user';
 
 import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
@@ -17,11 +18,12 @@ const yoga = createYoga({
     resolvers: {
       Query,
       Mutation,
-      Subscription
+      // Subscription
     },
   }),
   context: {
-    pubsub, 
+    pubsub,
+    UserModel
   },
   graphqlEndpoint: '/'
 });
