@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ComicProvider } from './containers/hooks/useComic';
 
 import {
   ApolloProvider,
@@ -25,7 +25,9 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
       <ApolloProvider client={client}>
-        <App />
+        <ComicProvider>
+          <App />
+        </ComicProvider>
       </ApolloProvider>
   </React.StrictMode>
 );

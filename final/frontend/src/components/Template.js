@@ -1,8 +1,9 @@
 
-const Template = () => {
+
+const Template = ({ name }) => {
 	return (
 		<>
-			<h4>hi, user</h4>
+			<h4>hi, {name}</h4>
 			<h1>Choose a template</h1>
 		</>
 	);

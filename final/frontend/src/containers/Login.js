@@ -1,8 +1,9 @@
 // copied from https://www.howtographql.com/react-apollo/5-authentication/
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
 import { AUTH_TOKEN } from '../constants';
+import { useComic } from '../containers/hooks/useComic';
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation(
@@ -38,39 +39,61 @@ const LOGIN_MUTATION = gql`
 
 const Login = () => {
   const navigate = useNavigate();
+  const { me, setMe } = useComic();
   const [formState, setFormState] = useState({
     login: true,
     email: '',
     password: '',
     name: ''
   });
-
-  const [login, { login_data }] = useMutation(LOGIN_MUTATION, {
+  
+  // set me with the resolver return value
+  const [login] = useMutation(LOGIN_MUTATION, {
+    // update: (mutationResult) => {
+    //   console.log('mutationResult: ', mutationResult.data.data["User:63abef14a72cf715bc75503f"].name);
+    // },
     variables: {
       email: formState.email,
       password: formState.password
     },
-    onCompleted: ({ login }) => {
-      localStorage.setItem(AUTH_TOKEN, login.token);
-      console.log('login oncompleted');
+    onCompleted: (data) => {
+      // localStorage.setItem(AUTH_TOKEN, login.token);
+      console.log("name:", data.login.name);
+      setMe(data.login.name);
       navigate('/template');
     }
   });
-  console.log('login_data');
-  console.log(login_data);
+
+  // useEffect(() => {
+  //   console.log('login_data');
+  //   console.log(login_data);
+  // }, [login_data]);
   
-  const [signup, { signup_data }] = useMutation(SIGNUP_MUTATION, {
+  const [signup] = useMutation(SIGNUP_MUTATION, {
     variables: {
       name: formState.name,
       email: formState.email,
       password: formState.password
     },
-    onCompleted: ({ signup }) => {
-      localStorage.setItem(AUTH_TOKEN, signup.token);
-      console.log('signup oncompleted');
+    onCompleted: (data) => {
+      // localStorage.setItem(AUTH_TOKEN, signup.token);
+      console.log("name:", data.signup.name);
+      setMe(data.signup.name);
       navigate('/template');
     }
   });
+
+  // const handleLoginOrSignup = async () => {
+  //   if (formState.login){
+  //     let { data } = await login();
+  //     // console.log(data.login.name);
+      
+  //   }
+  //   else{
+  //     let { data } = await signup();
+  //     // console.log(data.signup.name);
+  //   }
+  // }
 
   return (
     <div>
@@ -81,43 +104,44 @@ const Login = () => {
         {!formState.login && (
           <input
             value={formState.name}
-            onChange={(e) =>
+            onChange={(e) => {
               setFormState({
                 ...formState,
                 name: e.target.value
               })
-            }
+            }}
             type="text"
             placeholder="Your name"
           />
         )}
         <input
           value={formState.email}
-          onChange={(e) =>
+          onChange={(e) => {
             setFormState({
               ...formState,
               email: e.target.value
-            })
-          }
+            });
+          }}
           type="text"
           placeholder="Your email address"
         />
         <input
           value={formState.password}
-          onChange={(e) =>
+          onChange={(e) => {
             setFormState({
               ...formState,
               password: e.target.value
-            })
-          }
+            });
+          }}
           type="password"
-          placeholder="Choose a safe password"
+          placeholder={formState.login ? "Your password" : "Choose a safe password"}
         />
       </div>
       <div className="flex mt3">
         <button
           className="pointer mr2 button"
           onClick={formState.login ? login : signup}
+          // onClick={handleLoginOrSignup}
         >
           {formState.login ? 'login' : 'create account'}
         </button>

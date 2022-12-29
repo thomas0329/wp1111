@@ -16,10 +16,9 @@ const Mutation = {
 		console.log('new user created');
 		console.log(user);
 		return user;
-		
 	},
 	login: async (parent, { email, password }, { UserModel }, info) => {
-
+		console.log('login resolver called');
 		const user = await UserModel.findOne({ email });
 		if (!user) {
 			throw new Error('No such user found');
