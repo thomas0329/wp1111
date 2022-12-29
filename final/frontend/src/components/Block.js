@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Title from './Title';
 
 const Wrapper = styled.div`
     display: flex;
@@ -10,12 +11,14 @@ const Wrapper = styled.div`
         font-size: 3em;
     }
 `
-const Title = () => {
-    return (
-        <Wrapper>
-            <h1>Comic Creator!</h1>
-        </Wrapper>
-    );
-};
 
-export default Title;
+const Block = () => {
+	return (
+		<>
+            <Title />
+			<h1>Choose a block</h1>
+		</>
+	);
+}
+
+export default Block;

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
 import { AUTH_TOKEN } from '../constants';
 import { useComic } from '../containers/hooks/useComic';
+import Title from '../components/Title';
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation(
@@ -58,7 +59,6 @@ const Login = () => {
     },
     onCompleted: (data) => {
       // localStorage.setItem(AUTH_TOKEN, login.token);
-      console.log("name:", data.login.name);
       setMe(data.login.name);
       navigate('/template');
     }
@@ -77,7 +77,6 @@ const Login = () => {
     },
     onCompleted: (data) => {
       // localStorage.setItem(AUTH_TOKEN, signup.token);
-      console.log("name:", data.signup.name);
       setMe(data.signup.name);
       navigate('/template');
     }
@@ -97,6 +96,7 @@ const Login = () => {
 
   return (
     <div>
+      <Title />
       <h4 className="mv3">
         {formState.login ? 'Login' : 'Sign Up'}
       </h4>
