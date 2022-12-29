@@ -8,7 +8,7 @@ import { useComic } from './hooks/useComic';
 import Block from '../components/Block';
 
 const App = () => {
-const { me } = useComic();
+  const { me, currentTemplate } = useComic();
 
   return (
     <Router>
@@ -16,7 +16,7 @@ const { me } = useComic();
             <Route path="/" element={<MainPage/>} />
             <Route path="/login" element={<Login/>} />
             <Route path="/template" element={<Template name={me}/>} />
-            <Route path="/block" element={<Block/>} />
+            <Route path="/block" element={<Block template={currentTemplate}/>} />
           </Routes>
     </Router>
   );

@@ -1,8 +1,8 @@
 // copied from https://www.howtographql.com/react-apollo/5-authentication/
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
-import { AUTH_TOKEN } from '../constants';
+// import { AUTH_TOKEN } from '../constants';
 import { useComic } from '../containers/hooks/useComic';
 import Title from '../components/Title';
 
@@ -40,7 +40,7 @@ const LOGIN_MUTATION = gql`
 
 const Login = () => {
   const navigate = useNavigate();
-  const { me, setMe } = useComic();
+  const { setMe } = useComic();
   const [formState, setFormState] = useState({
     login: true,
     email: '',

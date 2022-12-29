@@ -8,7 +8,7 @@ const Wrapper = styled.div`
 `
 
 const MainPage = () => {
-	// use navigate here
+	
 	const navigate = useNavigate();
 	return (
 		<Wrapper onClick={() => {navigate('/login');}}>
