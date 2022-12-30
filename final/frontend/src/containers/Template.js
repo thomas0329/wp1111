@@ -1,7 +1,7 @@
-import Title from './Title';
+import Title from '../components/Title';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { useComic } from '../containers/hooks/useComic';
+import { useComic } from './hooks/useComic';
 
 const BlockWrapper = styled.div`
 	width: 100%;
@@ -27,7 +27,7 @@ const Template = ({ name }) => {
 		setCurrentTemplate(event.currentTarget.id);
 		navigate('/block');
 	}
-
+	
 	return (
 		<>
 			<Title />

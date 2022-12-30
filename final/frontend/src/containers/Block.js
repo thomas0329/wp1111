@@ -1,34 +1,30 @@
 import styled from 'styled-components';
-import Title from './Title';
+import Title from '../components/Title';
+import { FourFrame } from '../components/templates';
+import { useNavigate } from 'react-router-dom';
 
 const Wrapper = styled.div`
 	display: flex;
-	align-items: center;
-	justify-content: center;
-	h1{
-			margin: 0;
-			margin-right: 20px;
-			font-size: 3em;
-	}
+	flex-direction: column;
 `
 
 const Block = ({ template }) => {
+	const navigate = useNavigate();
 
-	
 	const workingTemplate = () => {
 		switch(template){
 			case 'four-frame':
-				return (null);
-			default: 
+				return <FourFrame navigate={() => {navigate('/edit');}}/>;
+			default:
 				return (null);
 		}
 	}
 	return (
-		<>
+		<Wrapper>
 			<Title />
 			<h1>Choose a block</h1>
 			{workingTemplate()}
-		</>
+		</Wrapper>
 	);
 }
 

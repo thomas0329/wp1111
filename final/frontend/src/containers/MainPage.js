@@ -1,5 +1,5 @@
-import Title from './Title';
-import Description from './Description';
+import Title from '../components/Title';
+import Description from '../components/Description';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
