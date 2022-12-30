@@ -12,36 +12,37 @@ const BlockWrapper = styled.div`
 const BlockPreview = styled.div`
 	width: 100px;
 	height: 100px;
-`
-const BlockPreview1 = styled(BlockPreview)`
-	background-color: blue;
-`
-const BlockPreview2 = styled(BlockPreview)`
-	// background-color: red;
-`
-const BlockPreview3 = styled(BlockPreview)`
-	// background-color: green;
+	img {
+		width: 100%;
+		height: 100%;
+	}
 `
 
 const Template = ({ name }) => {
 
 	const { setCurrentTemplate } = useComic();
-	
 	const navigate = useNavigate();
+
+	const handleClick = (event) => {
+		setCurrentTemplate(event.currentTarget.id);
+		navigate('/block');
+	}
+
 	return (
 		<>
 			<Title />
 			<h4>hi, {name}</h4>
 			<h1>Choose a template</h1>
 			<BlockWrapper>
-				<BlockPreview1 
-					onClick={() => {
-						setCurrentTemplate('four-frame');
-						navigate('/block');
-					}}
-				/>
-				<BlockPreview2 />
-				<BlockPreview3 />
+				<BlockPreview id='four-frame' onClick={handleClick}>
+					<img src='img/template1.png' />
+				</BlockPreview>
+				<BlockPreview id='slanted' onClick={handleClick}>
+					<img src='img/template2.png' />
+				</BlockPreview>
+				<BlockPreview id='three-frame' onClick={handleClick}>
+					<img src='img/template3.png' />
+				</BlockPreview>
 			</BlockWrapper>
 		</>
 	);

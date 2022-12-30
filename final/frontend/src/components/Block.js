@@ -12,12 +12,22 @@ const Wrapper = styled.div`
 	}
 `
 
-const Block = () => {
+const Block = ({ template }) => {
+
+	
+	const workingTemplate = () => {
+		switch(template){
+			case 'four-frame':
+				return (null);
+			default: 
+				return (null);
+		}
+	}
 	return (
 		<>
 			<Title />
 			<h1>Choose a block</h1>
-			
+			{workingTemplate()}
 		</>
 	);
 }
