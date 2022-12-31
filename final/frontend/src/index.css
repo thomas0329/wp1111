@@ -6,6 +6,8 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: rgb(224, 141, 141);
+  color: white;
 }
 
 html {
@@ -14,6 +16,9 @@ html {
 
 #root{
   height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 code {
