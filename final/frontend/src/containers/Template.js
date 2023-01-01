@@ -35,13 +35,13 @@ const Template = ({ name }) => {
 			<h1>Choose a template</h1>
 			<BlockWrapper>
 				<BlockPreview id='four-frame' onClick={handleClick}>
-					<img src='img/template1.png' />
+					<img src='templates/1.png' />
 				</BlockPreview>
 				<BlockPreview id='slanted' onClick={handleClick}>
-					<img src='img/template2.png' />
+					<img src='templates/2.png' />
 				</BlockPreview>
 				<BlockPreview id='three-frame' onClick={handleClick}>
-					<img src='img/template3.png' />
+					<img src='templates/3.png' />
 				</BlockPreview>
 			</BlockWrapper>
 		</>

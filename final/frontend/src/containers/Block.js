@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const Wrapper = styled.div`
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 `
 
 const Block = ({ template }) => {
