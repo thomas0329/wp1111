@@ -253,6 +253,7 @@ const Edit = () => {
     console.log(textArea)
     console.log(action === "writing")
     if (action === "writing"){
+
       textArea.focus();
       textArea.value = selectedElement.text;
     }
