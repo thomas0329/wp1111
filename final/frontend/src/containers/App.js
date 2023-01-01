@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes }
 import Template from './Template';
 import { useComic } from './hooks/useComic';
 import Block from './Block';
+import Edit from './Edit';
 
 const App = () => {
   const { me, currentTemplate } = useComic();
@@ -17,7 +18,7 @@ const App = () => {
             <Route path="/login" element={<Login/>} />
             <Route path="/template" element={<Template name={me}/>} />
             <Route path="/block" element={<Block template={currentTemplate}/>} />
-            {/* <Route path="/edit" element={} /> */}
+            <Route path="/edit" element={<Edit/>} />
           </Routes>
     </Router>
   );
