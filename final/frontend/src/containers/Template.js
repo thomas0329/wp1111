@@ -31,7 +31,7 @@ const Template = ({ name }) => {
 	return (
 		<>
 			<Title />
-			<h4>hi, {name}</h4>
+			<h4>Hi, {name}</h4>
 			<h1>Choose a template</h1>
 			<BlockWrapper>
 				<BlockPreview id='four-frame' onClick={handleClick}>

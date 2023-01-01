@@ -2,41 +2,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMutation, gql } from '@apollo/client';
-// import { AUTH_TOKEN } from '../constants';
 import { useComic } from '../containers/hooks/useComic';
 import Title from '../components/Title';
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from '../graphql';
+import styled from 'styled-components';
 
-const SIGNUP_MUTATION = gql`
-  mutation SignupMutation(
-    $email: String!
-    $password: String!
-    $name: String!
-  ) {
-    signup(
-      email: $email
-      password: $password
-      name: $name
-    ) {
-      id
-      name
-      email
-    }
-  }
-`;
-
-const LOGIN_MUTATION = gql`
-  mutation LoginMutation(
-    $email: String!
-    $password: String!
-  ) {
-    login(email: $email, password: $password) {
-      id
-      name
-      email
-    }
-  }
-`;
-
+const Wrapper = styled.div`
+   display: flex;
+   flex-direction: column;
+   align-items: center;
+ `
 
 const Login = () => {
   const navigate = useNavigate();
@@ -50,9 +25,6 @@ const Login = () => {
   
   // set me with the resolver return value
   const [login] = useMutation(LOGIN_MUTATION, {
-    // update: (mutationResult) => {
-    //   console.log('mutationResult: ', mutationResult.data.data["User:63abef14a72cf715bc75503f"].name);
-    // },
     variables: {
       email: formState.email,
       password: formState.password
@@ -63,11 +35,6 @@ const Login = () => {
       navigate('/template');
     }
   });
-
-  // useEffect(() => {
-  //   console.log('login_data');
-  //   console.log(login_data);
-  // }, [login_data]);
   
   const [signup] = useMutation(SIGNUP_MUTATION, {
     variables: {
@@ -82,24 +49,12 @@ const Login = () => {
     }
   });
 
-  // const handleLoginOrSignup = async () => {
-  //   if (formState.login){
-  //     let { data } = await login();
-  //     // console.log(data.login.name);
-      
-  //   }
-  //   else{
-  //     let { data } = await signup();
-  //     // console.log(data.signup.name);
-  //   }
-  // }
-
   return (
-    <div>
+    <Wrapper>
       <Title />
-      <h4 className="mv3">
+      <h1 className="mv3">
         {formState.login ? 'Login' : 'Sign Up'}
-      </h4>
+      </h1>
       <div className="flex flex-column">
         {!formState.login && (
           <input
@@ -141,7 +96,6 @@ const Login = () => {
         <button
           className="pointer mr2 button"
           onClick={formState.login ? login : signup}
-          // onClick={handleLoginOrSignup}
         >
           {formState.login ? 'login' : 'create account'}
         </button>
@@ -159,7 +113,7 @@ const Login = () => {
             : 'already have an account?'}
         </button>
       </div>
-    </div>
+    </Wrapper>
   );
 };
 
