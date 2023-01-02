@@ -8,11 +8,31 @@ import rough from 'roughjs/bundled/rough.esm'
 import getStroke from "perfect-freehand";
 import styled from "styled-components";
 
-const Wrapper = styled.div`
+const CanvasWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;  
 `
+
+const TopBar = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`
+const ToolWrapper = styled.div`
+  display: flex;
+  color: #333
+  margin: 10px
+`
+
+const FunctionWrapper = styled.div`
+  position: fixed
+  align-items: center;
+  justify-content: space-between;
+  padding: 10
+
+`
+
+
 
 const generator = rough.generator()
 
@@ -210,7 +230,7 @@ const drawElement = (roughCanvas, context, element) => {
       roughCanvas.draw(element.roughElement);
       break;
     case "pencil":
-      const stroke = getSvgPathFromStroke(getStroke(element.points))
+      const stroke = getSvgPathFromStroke(getStroke(element.points, { size: 12 }))
       context.fill(new Path2D(stroke));
       break;
     case "text":
@@ -228,7 +248,25 @@ const average = (a, b) => (a + b) / 2
 
 const adjustmentRequired = type => ['line', 'rectangle'].includes(type)
 
+const download = () => {
+  const canvas = document.getElementById('canvas');
+  const link = document.createElement("a"); // creating <a> element
+  link.download = `${Date.now()}.jpg`; // passing current date as link download value
+  link.href = canvas.toDataURL(); // passing canvasData as link href value
+  link.click(); // clicking link to download image
 
+}
+const upload = () => {
+  return null
+}
+
+const convert = () => {
+  return null
+}
+
+const finishedit = () =>{
+  return null
+}
 
 const Edit = () => {
   const [elements, setElements, undo, redo] = useHistory([]);
@@ -242,6 +280,8 @@ const Edit = () => {
   useLayoutEffect(() => {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
+    context.fillStyle = '#fff'
+    context.fillStyle = '#000'
     context.clearRect(0, 0, canvas.width, canvas.height)
     const roughCanvas = rough.canvas(canvas)
 
@@ -439,40 +479,41 @@ const Edit = () => {
 
     <div>
       <Title />
-      <div style={{ position: 'fixed' }}>
-        <input
-          type='radio'
-          id='selection'
-          checked={tool === 'selection'}
-          onChange={() => setTool('selection')}
-        />
-        <label htmlFor="selection">Selection</label>
+      <TopBar>
+        <ToolWrapper>
+          <input
+            type='radio'
+            id='selection'
+            checked={tool === 'selection'}
+            onChange={() => setTool('selection')}
+          />
+          <label htmlFor="selection">Selection</label>
 
-        <input
-          type='radio'
-          id='line'
-          checked={tool === 'line'}
-          onChange={() => setTool('line')}
-        />
-        <label htmlFor="line">Line</label>
+          <input
+            type='radio'
+            id='line'
+            checked={tool === 'line'}
+            onChange={() => setTool('line')}
+          />
+          <label htmlFor="line">Line</label>
 
-        <input
-          type='radio'
-          id='rectangle'
-          checked={tool === 'rectangle'}
-          onChange={() => setTool('rectangle')}
-        />
-        <label htmlFor="rectangle">Rectangle</label>
+          <input
+            type='radio'
+            id='rectangle'
+            checked={tool === 'rectangle'}
+            onChange={() => setTool('rectangle')}
+          />
+          <label htmlFor="rectangle">Rectangle</label>
 
-        <input
-          type='radio'
-          id='pencil'
-          checked={tool === 'pencil'}
-          onChange={() => setTool('pencil')}
-        />
-        <label htmlFor="pencil">Pencil</label>
+          <input
+            type='radio'
+            id='pencil'
+            checked={tool === 'pencil'}
+            onChange={() => setTool('pencil')}
+          />
+          <label htmlFor="pencil">Pencil</label>
 
-        {/* <input
+          {/* <input
           type='radio'
           id='text'
           checked={tool === 'text'}
@@ -480,43 +521,50 @@ const Edit = () => {
         />
         <label htmlFor="text">Text</label> */}
 
-      </div>
-      <div style={{ position: 'fixed', bottom: 0, padding: 10 }}>
-        <button onClick={undo}>Undo</button>
-        <button onClick={redo}>Redo</button>
-      </div>
-      {action === "writing" ? (
-        <textarea
-          ref={textAreaRef}
-          // onBlur={handleBlur}
-          style={{
-            position: "fixed",
-            top: selectedElement.y1,
-            left: selectedElement.x1,
-            // font: "24px sans-serif",
-            // margin: 0,
-            // padding: 0,
-            // border: 0,
-            // outline: 0,
-            // resize: "auto",
-            // overflow: "hidden",
-            // whiteSpace: "pre",
-            // background: "transparent",
-          }}
-        />
-      ) : null}
-      <Wrapper>
+        </ToolWrapper>
+        <FunctionWrapper>
+          <button onClick={undo}>Undo</button>
+          <button onClick={redo}>Redo</button>
+
+          <button onClick={upload}>Upload</button>
+          <button onClick={convert}>Convert</button>
+          <button onClick={download}>Download</button>
+          <button onClick={finishedit}>Finish</button>
+        </FunctionWrapper>
+
+        {action === "writing" ? (
+          <textarea
+            ref={textAreaRef}
+            // onBlur={handleBlur}
+            style={{
+              position: "fixed",
+              top: selectedElement.y1,
+              left: selectedElement.x1,
+              // font: "24px sans-serif",
+              // margin: 0,
+              // padding: 0,
+              // border: 0,
+              // outline: 0,
+              // resize: "auto",
+              // overflow: "hidden",
+              // whiteSpace: "pre",
+              // background: "transparent",
+            }}
+          />
+        ) : null}
+      </TopBar>
+      <CanvasWrapper>
         <canvas id='canvas'
           // width={window.innerWidth}
           // height={window.innerHeight}
-          width='1000px'
+          width='500px'
           height='500px'
           style={{ backgroundColor: '#fff' }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
         >Canvas</canvas>
-      </Wrapper>
+      </CanvasWrapper>
 
     </div>
   </>);
