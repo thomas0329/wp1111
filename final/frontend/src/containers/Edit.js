@@ -1,11 +1,28 @@
 // yarn add react react-dom @excalidraw/excalidraw
-//yarn add perfect-freehand
+// yarn add perfect-freehand
+
+//https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#example_framing_an_image
 import Title from "../components/Title";
 import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import rough from 'roughjs/bundled/rough.esm'
 import getStroke from "perfect-freehand";
+import styled from "styled-components";
+
+const Wrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+`
 
 const generator = rough.generator()
+
+const getMousePos = (canvas, evt) => {
+  const rect = canvas.getBoundingClientRect();
+  return {
+    x: evt.clientX - rect.left,
+    y: evt.clientY - rect.top
+  };
+}
 
 const createElement = (id, x1, y1, x2, y2, type) => {
 
@@ -200,6 +217,7 @@ const drawElement = (roughCanvas, context, element) => {
       context.textBaseline = "top";
       context.font = "24px sans-serif";
       context.fillText(element.text, element.x1, element.y1);
+      console.log(element.x1, element.y1)
       break;
     default:
       throw new Error(`Type not recognised: ${element.type}`);
@@ -210,25 +228,27 @@ const average = (a, b) => (a + b) / 2
 
 const adjustmentRequired = type => ['line', 'rectangle'].includes(type)
 
+
+
 const Edit = () => {
   const [elements, setElements, undo, redo] = useHistory([]);
   const [action, setAction] = useState('none');
-  const [tool, setTool] = useState('text');
+  const [tool, setTool] = useState('line');
   const [selectedElement, setSelectedElement] = useState(null);
   const textAreaRef = useRef(null);
+
+
 
   useLayoutEffect(() => {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
     context.clearRect(0, 0, canvas.width, canvas.height)
-
     const roughCanvas = rough.canvas(canvas)
 
-    // elements.forEach(({ roughElement }) => roughCanvas.draw(roughElement));
     elements.forEach(element => {
       if (action === 'writing' && selectedElement.id === element.id) return;
-        drawElement(roughCanvas, context, element);
-  });
+      drawElement(roughCanvas, context, element);
+    });
   }, [elements, action, selectedElement])
 
   //undo, redo
@@ -250,9 +270,7 @@ const Edit = () => {
 
   useEffect(() => { //doesn't work!
     const textArea = textAreaRef.current;
-    console.log(textArea)
-    console.log(action === "writing")
-    if (action === "writing"){
+    if (action === "writing") {
 
       textArea.focus();
       textArea.value = selectedElement.text;
@@ -294,16 +312,25 @@ const Edit = () => {
     // if (action === 'writing') return;
 
     const { clientX, clientY } = event;
+    const canvas = document.getElementById('canvas')
+    const pos = getMousePos(canvas, event)
+
     if (tool === 'selection') {
-      const element = getElementAtPosition(clientX, clientY, elements)
+      // const element = getElementAtPosition(clientX, clientY, elements)
+      const element = getElementAtPosition(pos.x, pos.y, elements)
+
       if (element) {
         if (element.type === 'pencil') {
-          const xOffsets = element.points.map(point => clientX - point.x);
-          const yOffsets = element.points.map(point => clientY - point.y);
+          // const xOffsets = element.points.map(point => clientX - point.x);
+          // const yOffsets = element.points.map(point => clientY - point.y);
+          const xOffsets = element.points.map(point => pos.x - point.x);
+          const yOffsets = element.points.map(point => pos.y - point.y);
           setSelectedElement({ ...element, xOffsets, yOffsets })
         } else {
-          const offsetX = clientX - element.x1;
-          const offsetY = clientY - element.y1;
+          // const offsetX = clientX - element.x1;
+          // const offsetY = clientY - element.y1;
+          const offsetX = pos.x - element.x1;
+          const offsetY = pos.y - element.y1;
           setSelectedElement({ ...element, offsetX, offsetY })
         }
         setElements(prevState => prevState)
@@ -316,7 +343,9 @@ const Edit = () => {
       }
     } else {
       const id = elements.length;
-      const element = createElement(id, clientX, clientY, clientX, clientY, tool)
+
+      // const element = createElement(id, clientX, clientY, clientX, clientY, tool)
+      const element = createElement(id, pos.x, pos.y, pos.x, pos.y, tool)
       setElements(prevState => [...prevState, element])
       setSelectedElement(element)
       setAction(tool === 'text' ? 'writing' : 'drawing')
@@ -326,8 +355,12 @@ const Edit = () => {
   const handleMouseMove = event => {
     const { clientX, clientY } = event;
 
+    const canvas = document.getElementById('canvas')
+    const pos = getMousePos(canvas, event)
+
     if (tool === 'selection') {
-      const element = getElementAtPosition(clientX, clientY, elements);
+      // const element = getElementAtPosition(clientX, clientY, elements);
+      const element = getElementAtPosition(pos.x, pos.y, elements);
       event.target.style.cursor = element
         ? cursorForPosition(element.position)
         : 'default'
@@ -336,14 +369,17 @@ const Edit = () => {
     if (action === 'drawing') {
       const index = elements.length - 1;
       const { x1, y1 } = elements[index];
-      updateElement(index, x1, y1, clientX, clientY, tool);
+      // updateElement(index, x1, y1, clientX, clientY, tool);
+      updateElement(index, x1, y1, pos.x, pos.y, tool);
 
     } else if (action === 'moving') {
 
       if (selectedElement.type === 'pencil') {
         const newPoints = selectedElement.points.map((_, index) => ({
-          x: clientX - selectedElement.xOffsets[index],
-          y: clientY - selectedElement.yOffsets[index]
+          // x: clientX - selectedElement.xOffsets[index],
+          // y: clientY - selectedElement.yOffsets[index]
+          x: pos.x - selectedElement.xOffsets[index],
+          y: pos.y - selectedElement.yOffsets[index]
         }))
         const elementsCopy = [...elements];
         elementsCopy[selectedElement.id] = {
@@ -357,13 +393,16 @@ const Edit = () => {
         const { id, x1, x2, y1, y2, type, offsetX, offsetY } = selectedElement;
         const width = x2 - x1;
         const height = y2 - y1;
-        const newX1 = clientX - offsetX;
-        const newY1 = clientY - offsetY;
+        // const newX1 = clientX - offsetX;
+        // const newY1 = clientY - offsetY;
+        const newX1 = pos.x - offsetX;
+        const newY1 = pos.y - offsetY;
         updateElement(id, newX1, newY1, newX1 + width, newY1 + height, type);
       }
     } else if (action === 'resizing') {
       const { id, type, position, ...coordinates } = selectedElement;
-      const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates)
+      // const { x1, y1, x2, y2 } = resizedCoordinates(clientX, clientY, position, coordinates)
+      const { x1, y1, x2, y2 } = resizedCoordinates(pos.x, pos.y, position, coordinates)
       updateElement(id, x1, y1, x2, y2, type)
 
     }
@@ -399,7 +438,7 @@ const Edit = () => {
   return (<>
 
     <div>
-      {/* <Title /> */}
+      <Title />
       <div style={{ position: 'fixed' }}>
         <input
           type='radio'
@@ -433,13 +472,13 @@ const Edit = () => {
         />
         <label htmlFor="pencil">Pencil</label>
 
-        <input
+        {/* <input
           type='radio'
           id='text'
           checked={tool === 'text'}
           onChange={() => setTool('text')}
         />
-        <label htmlFor="text">Text</label>
+        <label htmlFor="text">Text</label> */}
 
       </div>
       <div style={{ position: 'fixed', bottom: 0, padding: 10 }}>
@@ -454,25 +493,31 @@ const Edit = () => {
             position: "fixed",
             top: selectedElement.y1,
             left: selectedElement.x1,
-            //     // font: "24px sans-serif",
-            //     // margin: 0,
-            //     // padding: 0,
-            //     // border: 0,
-            //     // outline: 0,
-            //     // resize: "auto",
-            //     // overflow: "hidden",
-            //     // whiteSpace: "pre",
-            //     // background: "transparent",
+            // font: "24px sans-serif",
+            // margin: 0,
+            // padding: 0,
+            // border: 0,
+            // outline: 0,
+            // resize: "auto",
+            // overflow: "hidden",
+            // whiteSpace: "pre",
+            // background: "transparent",
           }}
         />
       ) : null}
-      <canvas id='canvas'
-        width={window.innerWidth}
-        height={window.innerHeight}
-        onMouseDown={handleMouseDown}
-        onMouseMove={handleMouseMove}
-        onMouseUp={handleMouseUp}
-      >Canvas</canvas>
+      <Wrapper>
+        <canvas id='canvas'
+          // width={window.innerWidth}
+          // height={window.innerHeight}
+          width='1000px'
+          height='500px'
+          style={{ backgroundColor: '#fff' }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+        >Canvas</canvas>
+      </Wrapper>
+
     </div>
   </>);
 
