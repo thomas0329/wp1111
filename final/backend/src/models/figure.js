@@ -9,7 +9,7 @@ const FigSchema = new Schema({
 });
 
 const FigModel =
-    mongoose.model('User',
+    mongoose.model('Fig',
     FigSchema);
 
 export { FigModel as default }
