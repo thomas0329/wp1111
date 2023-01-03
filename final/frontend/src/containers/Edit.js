@@ -11,10 +11,24 @@ import rough from 'roughjs/bundled/rough.esm'
 import getStroke from "perfect-freehand";
 import styled from "styled-components";
 
+
+const Wrapper = styled.div`
+  width: 50%
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center; 
+  justify-content: center;
+  
+  `
 const CanvasWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;  
+  justify-content: center;
+  width: 100%
+  
+  canvas{
+    position: absolute
+  }
 `
 
 const TopBar = styled.div`
@@ -23,16 +37,12 @@ const TopBar = styled.div`
 `
 const ToolWrapper = styled.div`
   display: flex;
-  color: #333
-  margin: 10px
 `
 
 const FunctionWrapper = styled.div`
   position: fixed
   align-items: center;
   justify-content: space-between;
-  padding: 10
-
 `
 
 
@@ -240,7 +250,6 @@ const drawElement = (roughCanvas, context, element) => {
       context.textBaseline = "top";
       context.font = "24px sans-serif";
       context.fillText(element.text, element.x1, element.y1);
-      console.log(element.x1, element.y1)
       break;
     default:
       throw new Error(`Type not recognised: ${element.type}`);
@@ -252,21 +261,27 @@ const average = (a, b) => (a + b) / 2
 const adjustmentRequired = type => ['line', 'rectangle'].includes(type)
 
 const download = () => {
+  //把兩個canvas合併成一個 
   const canvas = document.getElementById('canvas');
+  const canvas_fig = document.getElementById('canvas_fig')
+  canvas_fig.getContext('2d').drawImage(canvas,0,0)
   const link = document.createElement("a"); // creating <a> element
   link.download = `${Date.now()}.jpg`; // passing current date as link download value
-  link.href = canvas.toDataURL(); // passing canvasData as link href value
+  link.href = canvas_fig.toDataURL(); // passing canvasData as link href value
   link.click(); // clicking link to download image
 
 }
 const upload = (event) => {
+  //有兩層canvas，canvas_fig放圖片，canvas放畫的東西
   //https://medium.com/front-end-weekly/draw-an-image-in-canvas-using-javascript-%EF%B8%8F-2f75b7232c63
+
   const fileInput = document.getElementById('fileinput');
+  const figcanvas = document.getElementById('canvas_fig');
   const canvas = document.getElementById('canvas');
-  const context = canvas.getContext('2d');
+  const figcontext = figcanvas.getContext('2d');
 
   fileInput.addEventListener('change', () => {
-    context.clearRect(0, 0, canvas.width, canvas.height)
+
     if (event.target.files) {
       const file = event.target.files[0];
       const reader = new FileReader();
@@ -274,29 +289,29 @@ const upload = (event) => {
       reader.onloadend = element => {
         const image = new Image();
         image.src = element.target.result;
-
         image.onload = () => {
-          //等比例縮放
-          let scale = 1
-          const maxlen = 500
+          figcontext.clearRect(0, 0, figcanvas.width, figcanvas.height)
 
-          if(image.width > maxlen || image.height > maxlen){
-            if(image.width > image.height){
+          let scale = 1
+          const maxlen = 800
+
+          if (image.width > maxlen || image.height > maxlen) {
+            if (image.width > image.height) {
               scale = maxlen / image.width
             } else {
               scale = maxlen / image.height
             }
           }
-          
-          canvas.width = image.width * scale;
-          canvas.height = image.height * scale;
-          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+          figcanvas.width = canvas.width = image.width * scale;
+          figcanvas.height = canvas.height = image.height * scale;
+          figcontext.drawImage(image, 0, 0, figcanvas.width, figcanvas.height);
         }
+
       }
     }
   })
-}
-  ;
+
+};
 
 const convert = () => {
   return null
@@ -327,6 +342,7 @@ const Edit = () => {
     });
   }, [elements, action, selectedElement])
 
+
   //undo, redo
   useEffect(() => {
 
@@ -352,6 +368,8 @@ const Edit = () => {
       textArea.value = selectedElement.text;
     }
   }, [action, selectedElement]);
+
+
 
   const updateElement = (id, x1, y1, x2, y2, type, options) => {
     const elementsCopy = [...elements];
@@ -512,9 +530,8 @@ const Edit = () => {
   }
 
   return (<>
-
-    <div>
-      <Title />
+    <Title />
+    <Wrapper>
       <TopBar>
         <ToolWrapper>
           <input
@@ -549,6 +566,7 @@ const Edit = () => {
           />
           <label htmlFor="pencil">Pencil</label>
 
+
           {/* <input
           type='radio'
           id='text'
@@ -565,10 +583,10 @@ const Edit = () => {
           <button onClick={convert}>Convert</button>
           <button onClick={download}>Download</button>
           <button onClick={finishedit}>Finish</button>
-          {/* <span> */}
-          <input id='fileinput' type="file" accept="image/*" onClick={upload} />
-          {/* <button onClick={upload}>Upload</button> */}
-          {/* </span> */}
+          <span>
+            <input id='fileinput' type="file" accept="image/*" onClick={upload} />
+            {/* <button onClick={upload}>Upload</button> */}
+          </span>
         </FunctionWrapper>
 
         {action === "writing" ? (
@@ -579,21 +597,23 @@ const Edit = () => {
               position: "fixed",
               top: selectedElement.y1,
               left: selectedElement.x1,
-              // font: "24px sans-serif",
-              // margin: 0,
-              // padding: 0,
-              // border: 0,
-              // outline: 0,
-              // resize: "auto",
-              // overflow: "hidden",
-              // whiteSpace: "pre",
-              // background: "transparent",
+
             }}
           />
         ) : null}
       </TopBar>
       <CanvasWrapper>
         <canvas id='canvas'
+          // width={window.innerWidth}
+          // height={window.innerHeight}
+          width='300px'
+          height='300px'
+          style={{ position: 'absolute'}}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+        >Canvas</canvas>
+        <canvas id='canvas_fig'
           // width={window.innerWidth}
           // height={window.innerHeight}
           width='500px'
@@ -604,8 +624,7 @@ const Edit = () => {
           onMouseUp={handleMouseUp}
         >Canvas</canvas>
       </CanvasWrapper>
-
-    </div>
+    </Wrapper>
   </>);
 
 }
