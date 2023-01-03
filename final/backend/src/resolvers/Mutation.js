@@ -1,6 +1,25 @@
 import bcrypt from 'bcrypt';
+import Image from '../models/image';
+import fs from 'fs';
 
 const Mutation = {
+	// for image upload
+	singleUpload: async (parent, { file }) => {
+		console.log('file: ', file);	// file of type blob
+		const name = file.name;
+		file = Buffer.from(file.toString('base64'));
+		console.log('file: ', file);
+		const img = new Image({name: name, img: file});
+		try{
+			img.save();
+		}
+		catch(err) {
+			console.log(`Error in Saving User: ${err}`);
+		}
+		console.log("image saved successfully");
+	},
+
+	// for login system
 	signup: async (parent, { email, password, name }, { UserModel }, info) => {
 		const passwd = await bcrypt.hash(password, 10);
 		// const user = await context.prisma.user.create({

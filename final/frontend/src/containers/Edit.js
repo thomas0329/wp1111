@@ -10,7 +10,8 @@ import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import rough from 'roughjs/bundled/rough.esm'
 import getStroke from "perfect-freehand";
 import styled from "styled-components";
-
+import { useMutation } from "@apollo/client";
+import { SINGLE_UPLOAD_MUTATION } from '../graphql';
 
 const Wrapper = styled.div`
   width: 50%
@@ -18,8 +19,7 @@ const Wrapper = styled.div`
   flex-wrap: wrap;
   align-items: center; 
   justify-content: center;
-  
-  `
+`
 const CanvasWrapper = styled.div`
   display: flex;
   align-items: center;
@@ -50,8 +50,6 @@ const FunctionWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
 `
-
-
 
 const generator = rough.generator()
 
@@ -323,16 +321,8 @@ const upload = (event) => {
       }
     }
   })
-
 };
 
-const convert = () => {
-  return null
-}
-
-const finishedit = () => {
-  return null
-}
 
 
 
@@ -548,6 +538,27 @@ const Edit = () => {
     setSelectedElement(null)
     updateElement(id, x1, y1, null, null, type, { text: event.target.value })
     return
+  }
+
+  const [fileData, setFileData] = useState(null);
+
+  const convert = () => {
+    saveImage();
+  }
+  
+  const finishedit = () => {
+    saveImage();
+  }
+
+  const onChangeFile = e => {
+    setFileData(e.target.files[0]);
+  };
+
+  const [singleUpload] = useMutation(SINGLE_UPLOAD_MUTATION);
+
+  const saveImage = async () => {
+    console.log('filedata: ', fileData);  // ok
+    await singleUpload({ variables: { file: fileData } });
   }
 
   return (<>

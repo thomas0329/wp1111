@@ -7,6 +7,7 @@ import Template from './Template';
 import { useComic } from './hooks/useComic';
 import Block from './Block';
 import Edit from './Edit';
+// import Edit from './Edit_for_img';
 
 const App = () => {
   const { me, currentTemplate } = useComic();

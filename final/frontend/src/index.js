@@ -4,22 +4,24 @@ import './index.css';
 import App from './containers/App';
 import reportWebVitals from './reportWebVitals';
 import { ComicProvider } from './containers/hooks/useComic';
-
-import {
-  ApolloProvider,
-  ApolloClient,
-  createHttpLink,
-  InMemoryCache
-} from '@apollo/client';
+import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
+import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
 
 const httpLink = createHttpLink({
   uri: 'http://localhost:4000'
 });
 
+const uploadLink = createUploadLink({ uri: 'http://localhost:4000' });
+
 const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache()
+  cache: new InMemoryCache(),
+  link: uploadLink,
 });
+
+// const client = new ApolloClient({
+//   link: httpLink,
+//   cache: new InMemoryCache()
+// });
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
