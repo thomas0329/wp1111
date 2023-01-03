@@ -1,7 +1,10 @@
 // yarn add react react-dom @excalidraw/excalidraw
 // yarn add perfect-freehand
 
+//download
 //https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Using_images#example_framing_an_image
+//save to backend
+//https://stackoverflow.com/questions/13198131/how-to-save-an-html5-canvas-as-an-image-on-a-server
 import Title from "../components/Title";
 import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import rough from 'roughjs/bundled/rough.esm'
@@ -256,17 +259,54 @@ const download = () => {
   link.click(); // clicking link to download image
 
 }
-const upload = () => {
-  return null
+const upload = (event) => {
+  //https://medium.com/front-end-weekly/draw-an-image-in-canvas-using-javascript-%EF%B8%8F-2f75b7232c63
+  const fileInput = document.getElementById('fileinput');
+  const canvas = document.getElementById('canvas');
+  const context = canvas.getContext('2d');
+
+  fileInput.addEventListener('change', () => {
+    context.clearRect(0, 0, canvas.width, canvas.height)
+    if (event.target.files) {
+      const file = event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = element => {
+        const image = new Image();
+        image.src = element.target.result;
+
+        image.onload = () => {
+          //等比例縮放
+          let scale = 1
+          const maxlen = 500
+
+          if(image.width > maxlen || image.height > maxlen){
+            if(image.width > image.height){
+              scale = maxlen / image.width
+            } else {
+              scale = maxlen / image.height
+            }
+          }
+          
+          canvas.width = image.width * scale;
+          canvas.height = image.height * scale;
+          context.drawImage(image, 0, 0, canvas.width, canvas.height);
+        }
+      }
+    }
+  })
 }
+  ;
 
 const convert = () => {
   return null
 }
 
-const finishedit = () =>{
+const finishedit = () => {
   return null
 }
+
+
 
 const Edit = () => {
   const [elements, setElements, undo, redo] = useHistory([]);
@@ -275,13 +315,9 @@ const Edit = () => {
   const [selectedElement, setSelectedElement] = useState(null);
   const textAreaRef = useRef(null);
 
-
-
   useLayoutEffect(() => {
     const canvas = document.getElementById('canvas');
     const context = canvas.getContext('2d');
-    context.fillStyle = '#fff'
-    context.fillStyle = '#000'
     context.clearRect(0, 0, canvas.width, canvas.height)
     const roughCanvas = rough.canvas(canvas)
 
@@ -526,10 +562,13 @@ const Edit = () => {
           <button onClick={undo}>Undo</button>
           <button onClick={redo}>Redo</button>
 
-          <button onClick={upload}>Upload</button>
           <button onClick={convert}>Convert</button>
           <button onClick={download}>Download</button>
           <button onClick={finishedit}>Finish</button>
+          {/* <span> */}
+          <input id='fileinput' type="file" accept="image/*" onClick={upload} />
+          {/* <button onClick={upload}>Upload</button> */}
+          {/* </span> */}
         </FunctionWrapper>
 
         {action === "writing" ? (
