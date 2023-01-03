@@ -25,6 +25,8 @@ const CanvasWrapper = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%
+  position: relative
+  margin-top: 20px
   
   canvas{
     position: absolute
@@ -32,15 +34,19 @@ const CanvasWrapper = styled.div`
 `
 
 const TopBar = styled.div`
+  width: 100%;
   display: flex;
   flex-wrap: wrap;
+  align-items: center; 
+  justify-content: center;
 `
 const ToolWrapper = styled.div`
-  display: flex;
+  position: relative;
+  margin-right: 10px;
 `
 
 const FunctionWrapper = styled.div`
-  position: fixed
+  position: relative;
   align-items: center;
   justify-content: space-between;
 `
@@ -62,11 +68,15 @@ const createElement = (id, x1, y1, x2, y2, type) => {
   switch (type) {
     case 'line':
     case 'rectangle':
+    case 'circle':
+      const radius = Math.sqrt(Math.pow((x1 - x2), 2) + Math.pow((y1 - y2), 2));
       const roughElement = type === 'line'
         ? generator.line(x1, y1, x2, y2)
-        : generator.rectangle(x1, y1, x2 - x1, y2 - y1)
+        : type === 'rectangle'
+          ? generator.rectangle(x1, y1, x2 - x1, y2 - y1)
+          : generator.circle(x1, y1, radius, 0, 2 * Math.PI)
       return { id, x1, y1, x2, y2, type, roughElement }
-
+    
     case 'pencil':
       return { id, type, points: [{ x: x1, y: y1 }] }
     case 'text':
@@ -96,6 +106,7 @@ const positionWithinElement = (x, y, element) => {
 
       return start || end || on;
     case 'rectangle':
+    case 'circle':
       const topLeft = nearPoint(x, y, x1, y1, "tl");
       const topRight = nearPoint(x, y, x2, y1, "tr");
       const bottomLeft = nearPoint(x, y, x1, y2, "bl");
@@ -134,7 +145,7 @@ const getElementAtPosition = (x, y, elements) => {
 
 const adjustElementCoordinates = (element) => {
   const { type, x1, y1, x2, y2 } = element;
-  if (type === 'rectangle') {
+  if (type === 'rectangle' || type === 'circle') {
     const minX = Math.min(x1, x2);
     const maxX = Math.max(x1, x2);
     const minY = Math.min(y1, y2);
@@ -240,6 +251,7 @@ const drawElement = (roughCanvas, context, element) => {
   switch (element.type) {
     case "line":
     case "rectangle":
+    case 'circle':
       roughCanvas.draw(element.roughElement);
       break;
     case "pencil":
@@ -264,7 +276,7 @@ const download = () => {
   //把兩個canvas合併成一個 
   const canvas = document.getElementById('canvas');
   const canvas_fig = document.getElementById('canvas_fig')
-  canvas_fig.getContext('2d').drawImage(canvas,0,0)
+  canvas_fig.getContext('2d').drawImage(canvas, 0, 0)
   const link = document.createElement("a"); // creating <a> element
   link.download = `${Date.now()}.jpg`; // passing current date as link download value
   link.href = canvas_fig.toDataURL(); // passing canvasData as link href value
@@ -276,9 +288,9 @@ const upload = (event) => {
   //https://medium.com/front-end-weekly/draw-an-image-in-canvas-using-javascript-%EF%B8%8F-2f75b7232c63
 
   const fileInput = document.getElementById('fileinput');
-  const figcanvas = document.getElementById('canvas_fig');
+  const canvas_fig = document.getElementById('canvas_fig');
   const canvas = document.getElementById('canvas');
-  const figcontext = figcanvas.getContext('2d');
+  const context_fig = canvas_fig.getContext('2d');
 
   fileInput.addEventListener('change', () => {
 
@@ -290,7 +302,7 @@ const upload = (event) => {
         const image = new Image();
         image.src = element.target.result;
         image.onload = () => {
-          figcontext.clearRect(0, 0, figcanvas.width, figcanvas.height)
+          context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
 
           let scale = 1
           const maxlen = 800
@@ -302,9 +314,10 @@ const upload = (event) => {
               scale = maxlen / image.height
             }
           }
-          figcanvas.width = canvas.width = image.width * scale;
-          figcanvas.height = canvas.height = image.height * scale;
-          figcontext.drawImage(image, 0, 0, figcanvas.width, figcanvas.height);
+          canvas_fig.width = canvas.width = image.width * scale;
+          canvas_fig.height = canvas.height = image.height * scale;
+          context_fig.drawImage(image, 0, 0, canvas_fig.width, canvas_fig.height);
+          context_fig.drawImage(canvas, 0, 0)
         }
 
       }
@@ -377,6 +390,7 @@ const Edit = () => {
     switch (type) {
       case 'line':
       case 'rectangle':
+      case 'circle':
         elementsCopy[id] = createElement(id, x1, y1, x2, y2, type);
         break;
       case 'pencil':
@@ -412,7 +426,8 @@ const Edit = () => {
     if (tool === 'selection') {
       // const element = getElementAtPosition(clientX, clientY, elements)
       const element = getElementAtPosition(pos.x, pos.y, elements)
-
+      console.log(element.id)
+      console.log(elements)
       if (element) {
         if (element.type === 'pencil') {
           // const xOffsets = element.points.map(point => clientX - point.x);
@@ -434,7 +449,13 @@ const Edit = () => {
         } else {
           setAction('resizing')
         }
+
+        if (null) { //如果按delete
+          elements.pop(element.id)
+        }
+
       }
+
     } else {
       const id = elements.length;
 
@@ -560,6 +581,14 @@ const Edit = () => {
 
           <input
             type='radio'
+            id='circle'
+            checked={tool === 'circle'}
+            onChange={() => setTool('circle')}
+          />
+          <label htmlFor="circle">Circle</label>
+
+          <input
+            type='radio'
             id='pencil'
             checked={tool === 'pencil'}
             onChange={() => setTool('pencil')}
@@ -583,10 +612,15 @@ const Edit = () => {
           <button onClick={convert}>Convert</button>
           <button onClick={download}>Download</button>
           <button onClick={finishedit}>Finish</button>
-          <span>
-            <input id='fileinput' type="file" accept="image/*" onClick={upload} />
+
+          <button>
+            <label for = "fileinput">Upload</label>
+          </button>
+            <input id='fileinput' type="file" accept="image/*" onClick={upload} style = {{display: 'none'}}/>
+           
+        
+          
             {/* <button onClick={upload}>Upload</button> */}
-          </span>
         </FunctionWrapper>
 
         {action === "writing" ? (
@@ -606,9 +640,9 @@ const Edit = () => {
         <canvas id='canvas'
           // width={window.innerWidth}
           // height={window.innerHeight}
-          width='300px'
-          height='300px'
-          style={{ position: 'absolute'}}
+          width='500px'
+          height='500px'
+          style={{ position: 'absolute' }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
