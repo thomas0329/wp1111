@@ -3,7 +3,7 @@ import Query from './resolvers/Query';
 import Mutation from './resolvers/Mutation';
 import Subscription from './resolvers/Subscription';
 import UserModel from './models/user';
-
+import ImageModel from './models/image';
 import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
 import { createServer } from 'node:http';
 import * as fs from 'fs';
@@ -23,7 +23,8 @@ const yoga = createYoga({
   }),
   context: {
     pubsub,
-    UserModel
+    UserModel,
+    ImageModel
   },
   graphqlEndpoint: '/'
 });

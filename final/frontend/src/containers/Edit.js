@@ -12,6 +12,8 @@ import getStroke from "perfect-freehand";
 import styled from "styled-components";
 import { useMutation } from "@apollo/client";
 import { SINGLE_UPLOAD_MUTATION } from '../graphql';
+import { useNavigate } from 'react-router-dom';
+import { useComic } from "./hooks/useComic";
 
 const Wrapper = styled.div`
   width: 50%
@@ -297,7 +299,7 @@ const upload = (event) => {
 
     if (event.target.files) {
       const file = event.target.files[0];
-      console.log(file)
+      // console.log(file)
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = element => {
@@ -335,6 +337,8 @@ const Edit = () => {
   const [tool, setTool] = useState('line');
   const [selectedElement, setSelectedElement] = useState(null);
   const textAreaRef = useRef(null);
+  const navigate = useNavigate();
+  const { user } = useComic();
 
   useLayoutEffect(() => {
     const canvas = document.getElementById('canvas');
@@ -419,8 +423,8 @@ const Edit = () => {
     if (tool === 'selection') {
       // const element = getElementAtPosition(clientX, clientY, elements)
       const element = getElementAtPosition(pos.x, pos.y, elements)
-      console.log(element.id)
-      console.log(elements)
+      // console.log(element.id)
+      // console.log(elements)
       if (element) {
         if (element.type === 'pencil') {
           // const xOffsets = element.points.map(point => clientX - point.x);
@@ -552,6 +556,7 @@ const Edit = () => {
 
   const finishedit = () => {
     saveImage();
+    navigate('/block');
   }
 
   const onChangeFile = e => {
@@ -565,7 +570,8 @@ const Edit = () => {
   const saveImage = async () => {
     console.log('filedata: ', fileData);  // ok
     console.log('filelink', fileLink)
-    await singleUpload({ variables: { link: fileLink, file: fileData } });
+    console.log('user.email: ', user.email);  // ok
+    await singleUpload({ variables: { link: fileLink, file: fileData, userEmail: user.email} });
   }
 
   const reload = () => {
@@ -574,7 +580,7 @@ const Edit = () => {
     const canvas = document.getElementById('canvas');
     const context_fig = canvas_fig.getContext('2d');
     const image = new Image();
-    console.log(fileLink)
+    // console.log(fileLink)
     image.src = fileLink  //後端的link送到這裡
     image.onload = () => {
       context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
@@ -642,7 +648,6 @@ const Edit = () => {
             onChange={() => setTool('pencil')}
           />
           <label htmlFor="pencil">Pencil</label>
-
 
           {/* <input
           type='radio'

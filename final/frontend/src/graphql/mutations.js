@@ -1,8 +1,8 @@
 import { gql } from '@apollo/client';
 
 const SINGLE_UPLOAD_MUTATION = gql`
-  mutation SingleUpload($file: Upload!, $link: String!) {
-    singleUpload(file: $file, link: $link) {
+  mutation SingleUpload($file: Upload!, $link: String!, $userEmail: String!) {
+    singleUpload(file: $file, link: $link, userEmail: $userEmail) {
       _id
       filename
     }
