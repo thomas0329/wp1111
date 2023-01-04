@@ -662,7 +662,7 @@ const Edit = () => {
           <button onClick={finishedit}>Finish</button>
 
           <button>
-            <label for="fileinput">Upload</label>
+            <label htmlFor="fileinput">Upload</label>
           </button>
           <input id='fileinput' type="file" accept="image/*" onClick={upload}
             style={{ display: 'none' }} onChange={onChangeFile}
