@@ -299,7 +299,7 @@ const upload = (event) => {
 
     if (event.target.files) {
       const file = event.target.files[0];
-      console.log(file)
+      // console.log(file)
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = element => {
@@ -423,8 +423,8 @@ const Edit = () => {
     if (tool === 'selection') {
       // const element = getElementAtPosition(clientX, clientY, elements)
       const element = getElementAtPosition(pos.x, pos.y, elements)
-      console.log(element.id)
-      console.log(elements)
+      // console.log(element.id)
+      // console.log(elements)
       if (element) {
         if (element.type === 'pencil') {
           // const xOffsets = element.points.map(point => clientX - point.x);
@@ -580,7 +580,7 @@ const Edit = () => {
     const canvas = document.getElementById('canvas');
     const context_fig = canvas_fig.getContext('2d');
     const image = new Image();
-    console.log(fileLink)
+    // console.log(fileLink)
     image.src = fileLink  //後端的link送到這裡
     image.onload = () => {
       context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)

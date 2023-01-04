@@ -2,6 +2,8 @@ scalar Upload
 
 type Query {
   _dummy: String
+  user(id: ID, name: String, email: String): User!
+  image(id: ID): [File]
 }
 
 type Mutation {
@@ -16,12 +18,19 @@ type User {
   email: String!
 }
 
+type Link{
+  url: [String]
+}
+
+type Img{
+  url: [String]
+}
+
 type File {
   _id: ID!
-  path: String!
-  filename: String!
-  mimetype: String!
-  encoding: String!
+  name: String!
+  link: Link
+  img: Img
 }
 
 
