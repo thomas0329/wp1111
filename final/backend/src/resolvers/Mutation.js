@@ -6,8 +6,35 @@ const Mutation = {
 	// for image upload
 	singleUpload: async (parent, { link, file }) => {
 		const name = file.name;
-		link = Buffer.from(link.split(",")[1],"base64");
+
+		console.log('link: ',link)
+		console.log('file: ',file)
+		console.log('link(type): ', typeof link);
+		console.log('filedata(type): ', typeof file);
+		// console.log(file.lastModified)
+		// console.log(file.lastModifiedDate)
+		// console.log(file.name)
+		// console.log(file.size)
+		// console.log(file.type)
+		// console.log(file.webkitRelativePath)
+
+		// console.log(file.toString('base64'))
+		// console.log(file.toString('base64'))
+
+		// 	const getBase64StringFromDataURL = (dataURL) =>
+		// dataURL.replace('data:', '').replace(/^.+,/, '');
+		// 	const base64 = getBase64StringFromDataURL(link);
+		// 	console.log(base64);
+
+		// link = Buffer.from(link.split(",")[1],"base64");
+		link = Buffer.from(link.split(",")[1].toString("base64"));
 		file = Buffer.from(file.toString('base64'));
+
+		// console.log('link: ',link)
+		// console.log('file: ',file.toString('base64'))
+		// console.log('link: ',link)
+		// console.log('file: ',file)
+		// console.log(typeof file)
 		const img = new Image({name: name, link: link, img: file});
 		try{
 			img.save();
