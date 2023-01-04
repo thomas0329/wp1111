@@ -35,6 +35,7 @@ const CanvasWrapper = styled.div`
 
 const TopBar = styled.div`
   width: 100%;
+  height: 50px;
   display: flex;
   flex-wrap: wrap;
   align-items: center; 
@@ -74,7 +75,7 @@ const createElement = (id, x1, y1, x2, y2, type) => {
           ? generator.rectangle(x1, y1, x2 - x1, y2 - y1)
           : generator.circle(x1, y1, radius, 0, 2 * Math.PI)
       return { id, x1, y1, x2, y2, type, roughElement }
-    
+
     case 'pencil':
       return { id, type, points: [{ x: x1, y: y1 }] }
     case 'text':
@@ -270,30 +271,33 @@ const average = (a, b) => (a + b) / 2
 
 const adjustmentRequired = type => ['line', 'rectangle'].includes(type)
 
-const download = () => {
-  //把兩個canvas合併成一個 
+const mergecanvas = () => {
+  //把兩個canvas合併成一個
   const canvas = document.getElementById('canvas');
   const canvas_fig = document.getElementById('canvas_fig')
   canvas_fig.getContext('2d').drawImage(canvas, 0, 0)
   const link = document.createElement("a"); // creating <a> element
   link.download = `${Date.now()}.jpg`; // passing current date as link download value
   link.href = canvas_fig.toDataURL(); // passing canvasData as link href value
-  link.click(); // clicking link to download image
+  return link
+}
 
+const download = () => {
+  const link = mergecanvas()
+  link.click(); // clicking link to download image
+  return link
 }
 const upload = (event) => {
   //有兩層canvas，canvas_fig放圖片，canvas放畫的東西
-  //https://medium.com/front-end-weekly/draw-an-image-in-canvas-using-javascript-%EF%B8%8F-2f75b7232c63
-
   const fileInput = document.getElementById('fileinput');
   const canvas_fig = document.getElementById('canvas_fig');
   const canvas = document.getElementById('canvas');
   const context_fig = canvas_fig.getContext('2d');
-
   fileInput.addEventListener('change', () => {
 
     if (event.target.files) {
       const file = event.target.files[0];
+      console.log(file)
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = element => {
@@ -322,7 +326,6 @@ const upload = (event) => {
     }
   })
 };
-
 
 
 
@@ -541,16 +544,19 @@ const Edit = () => {
   }
 
   const [fileData, setFileData] = useState(null);
+  const [fileLink, setFileLink] = useState('')
 
   const convert = () => {
     saveImage();
   }
-  
+
   const finishedit = () => {
     saveImage();
   }
 
   const onChangeFile = e => {
+    const imglink = mergecanvas()
+    setFileLink(imglink.getAttribute('href'))
     setFileData(e.target.files[0]);
   };
 
@@ -558,8 +564,39 @@ const Edit = () => {
 
   const saveImage = async () => {
     console.log('filedata: ', fileData);  // ok
-    await singleUpload({ variables: { file: fileData } });
+    console.log('filelink', fileLink)
+    await singleUpload({ variables: { file: fileLink } });
   }
+
+  const reload = () => {
+    //get data from backend (現在是假的)
+    const canvas_fig = document.getElementById('canvas_fig');
+    const canvas = document.getElementById('canvas');
+    const context_fig = canvas_fig.getContext('2d');
+    const image = new Image();
+    console.log(fileLink)
+    image.src = fileLink  //後端的link送到這裡
+    image.onload = () => {
+      context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
+
+      let scale = 1
+      const maxlen = 800
+
+      if (image.width > maxlen || image.height > maxlen) {
+        if (image.width > image.height) {
+          scale = maxlen / image.width
+        } else {
+          scale = maxlen / image.height
+        }
+      }
+      canvas_fig.width = canvas.width = image.width * scale;
+      canvas_fig.height = canvas.height = image.height * scale;
+      context_fig.drawImage(image, 0, 0, canvas_fig.width, canvas_fig.height);
+      context_fig.drawImage(canvas, 0, 0)
+
+    }
+  }
+
 
   return (<>
     <Title />
@@ -625,14 +662,15 @@ const Edit = () => {
           <button onClick={finishedit}>Finish</button>
 
           <button>
-            <label for = "fileinput">Upload</label>
+            <label for="fileinput">Upload</label>
           </button>
-            <input id='fileinput' type="file" accept="image/*" onClick={upload} 
-              style = {{display: 'none'}} onChange={onChangeFile}
-            />
-        
-          
-            {/* <button onClick={upload}>Upload</button> */}
+          <input id='fileinput' type="file" accept="image/*" onClick={upload}
+            style={{ display: 'none' }} onChange={onChangeFile}
+          />
+
+          <button onClick={reload}>Reload</button>
+
+          {/* <button onClick={upload}>Upload</button> */}
         </FunctionWrapper>
 
         {action === "writing" ? (
