@@ -1,7 +1,7 @@
 import { useState, createContext, useContext} from "react";
 
 const ComicContext = createContext({
-	me: "",
+	user: {},
 	setMe: () => {},
 	currentTemplate: "",
 	setCurrentTemplate: () => {},
@@ -11,7 +11,7 @@ const ComicContext = createContext({
 
 const ComicProvider = (props) => {
 	
-	const [me, setMe] = useState("");
+	const [user, setUser] = useState({name: '', email: ''});
 	const [currentTemplate, setCurrentTemplate] = useState("");
 	
 	const [figure, setFigure] = useState("");
@@ -22,8 +22,8 @@ const ComicProvider = (props) => {
 	return(
 		<ComicContext.Provider
 			value = {{
-				me,
-				setMe,
+				user,
+				setUser,
 				currentTemplate,
 				setCurrentTemplate,
 				figure,

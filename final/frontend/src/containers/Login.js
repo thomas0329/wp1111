@@ -15,7 +15,7 @@ const Wrapper = styled.div`
 
 const Login = () => {
   const navigate = useNavigate();
-  const { setMe } = useComic();
+  const { setUser } = useComic();
   const [formState, setFormState] = useState({
     login: true,
     email: '',
@@ -31,7 +31,8 @@ const Login = () => {
     },
     onCompleted: (data) => {
       // localStorage.setItem(AUTH_TOKEN, login.token);
-      setMe(data.login.name);
+      console.log('data.login: ', data.login);
+      setUser({name: data.login.name, email: data.login.email});
       navigate('/template');
     }
   });
@@ -44,7 +45,7 @@ const Login = () => {
     },
     onCompleted: (data) => {
       // localStorage.setItem(AUTH_TOKEN, signup.token);
-      setMe(data.signup.name);
+      setUser({name: data.signup.name, email: data.signup.email});
       navigate('/template');
     }
   });

@@ -4,18 +4,23 @@ import fs from 'fs';
 
 const Mutation = {
 	// for image upload
-	singleUpload: async (parent, { link, file }) => {
+	singleUpload: async (parent, { link, file, userEmail }, { UserModel }) => {
+		console.log('userupload called');
 		const name = file.name;
 		link = Buffer.from(link.split(",")[1],"base64");
 		file = Buffer.from(file.toString('base64'));
-		const img = new Image({name: name, link: link, img: file});
+		// const img = new Image({name: name, link: link, img: file});
+		console.log('useremail: ', userEmail);
+		const user = await UserModel.findOne({ email: userEmail });
+		user.Image.push({name: name, link: link, img: file});
+		console.log('user: ', user);
 		try{
-			img.save();
+			user.save();
+			console.log("image saved successfully");
 		}
 		catch(err) {
 			console.log(`Error in Saving User: ${err}`);
 		}
-		console.log("image saved successfully");
 	},
 
 	// for login system

@@ -19,10 +19,10 @@ const FourFrame = ({ navigate }) => {
 
   return(
     <Wrapper>
-      <Block id='upperLeft' onClick={navigate}/>
-      <Block id='upperRight' onClick={navigate}/>
-      <Block id='lowerLeft' onClick={navigate}/>
-      <Block id='lowerRight' onClick={navigate}/>
+      <Block id='upperLeft' onClick={navigate} />
+      <Block id='upperRight' onClick={navigate} />
+      <Block id='lowerLeft' onClick={navigate} />
+      <Block id='lowerRight' onClick={navigate} />
     </Wrapper>
   );
 }
