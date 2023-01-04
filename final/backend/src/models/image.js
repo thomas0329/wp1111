@@ -3,7 +3,8 @@ import mongoose, { Schema } from "mongoose";
 
 const ImageSchema = new Schema({
   name: String,
-  img: Buffer,
+  link: Buffer,
+  img: Buffer
 });
 
 const ImageModel =

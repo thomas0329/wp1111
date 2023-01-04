@@ -4,14 +4,11 @@ import fs from 'fs';
 
 const Mutation = {
 	// for image upload
-	singleUpload: async (parent, { file }) => {
-		// console.log('file: ', file);	// file of type blob
-		const name = file.name
-		// console.log(name)
-		file = Buffer.from(file.split(",")[1],"base64");
-		// file = Buffer.from(file.toString('base64'));
-		// console.log('file: ', file);
-		const img = new Image({name: name, img: file});
+	singleUpload: async (parent, { link, file }) => {
+		const name = file.name;
+		link = Buffer.from(link.split(",")[1],"base64");
+		file = Buffer.from(file.toString('base64'));
+		const img = new Image({name: name, link: link, img: file});
 		try{
 			img.save();
 		}

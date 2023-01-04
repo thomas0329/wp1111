@@ -1,14 +1,13 @@
 scalar Upload
 
 type Query {
-  info: String!
-  uploads: [File]
+  _dummy: String
 }
 
 type Mutation {
   signup(email: String!, password: String!, name: String!): User
   login(email: String!, password: String!): User
-  singleUpload(file: Upload!): File
+  singleUpload(file: Upload!, link: String!): File
 }
 
 type User {

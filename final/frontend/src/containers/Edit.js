@@ -565,7 +565,7 @@ const Edit = () => {
   const saveImage = async () => {
     console.log('filedata: ', fileData);  // ok
     console.log('filelink', fileLink)
-    await singleUpload({ variables: { file: fileLink } });
+    await singleUpload({ variables: { link: fileLink, file: fileData } });
   }
 
   const reload = () => {
