@@ -121,7 +121,7 @@ const ChatRoom = () => {
                     tabBarStyle={{height: '36px'}}
                     type='editable-card'
                     activeKey={activeKey}
-                    onChange={(key) => {
+                    onChange={(key) => {    // change active chatbox, update messages
                         setActiveKey(key);
                         extractChat(key);
                         // startChat(me,key);

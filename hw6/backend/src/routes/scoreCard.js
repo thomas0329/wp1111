@@ -32,6 +32,6 @@ router.post("/card", async (req, res) => {
     }
     catch (e) { throw new Error("ScoreCard creation error: " + e); }
 });
-// router.get("/cards", ...);
+
 export default router;
  

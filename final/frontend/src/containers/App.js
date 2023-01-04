@@ -7,6 +7,7 @@ import Template from './Template';
 import { useComic } from './hooks/useComic';
 import Block from './Block';
 import Edit from './Edit';
+import Work from './Work';
 
 import Transform from './Transform';
 
@@ -22,6 +23,7 @@ const App = () => {
             <Route path="/block" element={<Block template={currentTemplate}/>} />
             <Route path="/edit" element={<Edit/>} />
             <Route path="/transform" element={<Transform/>} />
+            <Route path="/work" element={<Work/>} />
           </Routes>
     </Router>
   );
