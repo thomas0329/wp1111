@@ -627,8 +627,9 @@ const Edit = () => {
           <button>
             <label for = "fileinput">Upload</label>
           </button>
-            <input id='fileinput' type="file" accept="image/*" onClick={upload} style = {{display: 'none'}}/>
-           
+            <input id='fileinput' type="file" accept="image/*" onClick={upload} 
+              style = {{display: 'none'}} onChange={onChangeFile}
+            />
         
           
             {/* <button onClick={upload}>Upload</button> */}
