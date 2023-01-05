@@ -20,6 +20,8 @@
     yarn server
 3. 在 'frontend' folder 執行:
     yarn start
+<br>
+(空白畫布能直接finish)
 (Reload展示圖片的功能為login時至少有一張圖片才有效)
 
 ### 網頁流程
