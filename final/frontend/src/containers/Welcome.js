@@ -32,7 +32,7 @@ const Wrapper = styled.div`
 	flex-direction: column;
 `
 
-const Template = ({ name }) => {
+const Welcome = ({ name }) => {
 
 	const { setCurrentTemplate } = useComic();
 	const navigate = useNavigate();
@@ -56,7 +56,7 @@ const Template = ({ name }) => {
 			<Title />
 			<h2>Hi, {name}</h2>
 			<ButtonWrapper>
-				<button className = 'button'onClick={goCreate}>Create new</button>
+				<button className = 'button'onClick={goCreate}>Create New</button>
 				<button className = 'button'onClick={handleNext}>My Gallery</button>
 			</ButtonWrapper>
 
@@ -77,4 +77,4 @@ const Template = ({ name }) => {
 	);
 }
 
-export default Template;
+export default Welcome;

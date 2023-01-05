@@ -111,7 +111,8 @@ const Gallery = () => {
     console.log(user)
     await queryImg()
     if(error) console.log(error)
-    // console.log(imgData.image.Image[0])
+    console.log(imgData.image.Image)
+    console.log(imgData.image.Image.length - 1)
     const reloadlink = imgData.image.Image[imgData.image.Image.length - 1].link
     // console.log(reloadlink)
     const canvas_show = document.getElementById('canvas');

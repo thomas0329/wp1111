@@ -3,7 +3,7 @@ import Login from './Login';
 import MainPage from './MainPage';
 import { BrowserRouter as Router, Route, Routes }
          from 'react-router-dom';
-import Template from './Template';
+import Welcome from './Welcome';
 import { useComic } from './hooks/useComic';
 import Block from './Block';
 import Edit from './Edit';
@@ -20,7 +20,7 @@ const App = () => {
           <Routes>
             <Route path="/" element={<MainPage/>} />
             <Route path="/login" element={<Login/>} />
-            <Route path="/template" element={<Template name={user.name}/>} />
+            <Route path="/welcome" element={<Welcome name={user.name}/>} />
             {/* <Route path="/block" element={<Block template={currentTemplate}/>} /> */}
             <Route path="/edit" element={<Edit/>} />
             {/* <Route path="/transform" element={<Transform/>} /> */}

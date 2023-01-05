@@ -566,8 +566,8 @@ const Edit = () => {
     saveImage();
   }
 
-  const finishedit = () => {
-    saveImage();
+  const finishedit = async () => {
+    await saveImage();
     navigate('/gallery')
   }
 

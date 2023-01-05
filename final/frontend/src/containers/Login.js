@@ -67,7 +67,7 @@ const Login = () => {
       setUser({ name: data.login.name, email: data.login.email });
       console.log(data.login.name);
       console.log(data.login.email);
-      navigate('/template');
+      navigate('/welcome');
     }
   });
 
@@ -80,7 +80,7 @@ const Login = () => {
     onCompleted: (data) => {
       // localStorage.setItem(AUTH_TOKEN, signup.token);
       setUser({ name: data.signup.name, email: data.signup.email });
-      navigate('/template');
+      navigate('/welcome');
     }
   });
 
