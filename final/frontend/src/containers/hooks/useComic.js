@@ -2,6 +2,8 @@ import { useState, createContext, useContext} from "react";
 
 const ComicContext = createContext({
 	user: {},
+	setUser: ()=>{},
+	me: "",
 	setMe: () => {},
 	currentTemplate: "",
 	setCurrentTemplate: () => {},
@@ -13,7 +15,7 @@ const ComicProvider = (props) => {
 	
 	const [user, setUser] = useState({name: '', email: ''});
 	const [currentTemplate, setCurrentTemplate] = useState("");
-	
+	const [me, setMe] = useState("");
 	const [figure, setFigure] = useState("");
 	const transformFig = ()=>{
 		console.log("Hit transformation!");
@@ -24,6 +26,8 @@ const ComicProvider = (props) => {
 			value = {{
 				user,
 				setUser,
+				me,
+				setMe,
 				currentTemplate,
 				setCurrentTemplate,
 				figure,

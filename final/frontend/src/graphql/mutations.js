@@ -5,6 +5,12 @@ const SINGLE_UPLOAD_MUTATION = gql`
     singleUpload(file: $file, link: $link, userEmail: $userEmail) {
       _id
       name
+      link{
+        url
+      }
+      img{
+        url
+      }
     }
   }
 `
@@ -12,9 +18,9 @@ const SINGLE_UPLOAD_MUTATION = gql`
 
 const SIGNUP_MUTATION = gql`
   mutation SignupMutation(
-    $email: String!
-    $password: String!
-    $name: String!
+    $email: String!,
+    $password: String!,
+    $name: String!,
   ) {
     signup(
       email: $email

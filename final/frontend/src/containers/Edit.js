@@ -569,7 +569,7 @@ const Edit = () => {
 
   const saveImage = async () => {
     console.log('filedata: ', fileData);  // ok
-    console.log('filelink', fileLink)
+    console.log('filelink: ', fileLink)
     console.log('user.email: ', user.email);  // ok
     await singleUpload({ variables: { link: fileLink, file: fileData, userEmail: user.email} });
   }
