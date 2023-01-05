@@ -1,5 +1,5 @@
 # 111-1 Web programming final
-### Group 75 dooodle
+### Group 75 — Dooodle
 1. B08901209 林鈺翔
 2. R11725049 李宜臻
 3. R09B48004 蕭如秀
@@ -15,7 +15,7 @@
     yarn install
     
 ## 測試
-1. 在 'backend' folder加入自己的 '.env'檔
+1. 在 'backend' folder加入自己的 '.env'檔 (Mongodb)
 2. 在 'backend' folder執行：
     yarn server
 3. 在 'frontend' folder 執行:
@@ -28,6 +28,6 @@
     如有帳號則輸入帳號密碼進行註冊
     
 ### 組員負責項目
-1. B08901209 林鈺翔 deployment、logins、schema、FB貼文
-2. R11725049 李宜臻 前端畫布、美化頁面、影片demo
-3. R09B48004 蕭如秀 deployment、python和js的結合、README
+1. B08901209 林鈺翔    deployment、logins、schema、FB貼文
+2. R11725049 李宜臻    前端畫布、美化頁面、影片demo
+3. R09B48004 蕭如秀    deployment、python和js的結合、README
