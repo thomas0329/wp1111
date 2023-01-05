@@ -113,20 +113,15 @@ const Gallery = () => {
     const reloadlink = imgData.image.Image[imgData.image.Image.length - 1].link
     // console.log(reloadlink)
     const canvas_show = document.getElementById('canvas');
-    // const canvas_fig = document.getElementById('canvas_fig');
-    // const canvas_out = document.getElementById('canvas_out');
-
+   
     const context_show = canvas_show.getContext('2d')
-    // const context_fig = canvas_fig.getContext('2d');
-    // const context_out = canvas_out.getContext('2d')
+
 
     const image = new Image();
     image.src = reloadlink;
     
     image.onload = () => {
       context_show.clearRect(0, 0, canvas_show.width, canvas_show.height)
-      // context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
-      // context_out.clearRect(0, 0, context_out.width, context_out.height)
       
       canvas_show.width = image.width;
       canvas_show.height =  image.height;
@@ -155,7 +150,7 @@ const Gallery = () => {
         <canvas id='canvas'
           width='500px'
           height='500px'
-          style={{ backgroundColor: '#fff' }}
+          // style={{ backgroundColor: '#fff' }}
         >Canvas_show</canvas>
 
         {/* <canvas id='canvas_fig'

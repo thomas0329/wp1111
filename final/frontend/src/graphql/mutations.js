@@ -5,9 +5,7 @@ const SINGLE_UPLOAD_MUTATION = gql`
     singleUpload(file: $file, link: $link, userEmail: $userEmail) {
       _id
       name
-      link{
-        url
-      }
+      link
       img{
         url
       }

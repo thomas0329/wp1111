@@ -552,47 +552,13 @@ const Edit = () => {
   const saveImage = async () => {
     // console.log('filedata: ', fileData);  // ok
     const imglink = mergecanvas()
-    // console.log(imglink)
-    // setFileLink(imglink.getAttribute('href'))
     const fileLink = imglink.getAttribute('href')
     // console.log('filelink: ', fileLink)
-    console.log(user)
     // console.log('user.email: ', user.email);  // ok
-    // console.log(fileLink)
     await singleUpload({ variables: { link: fileLink, file: fileData, userEmail: user.email} });
   }
 
   const [queryImg, { loading, error, data: imgData, subscribeToMore }] = useLazyQuery(IMAGE_QUERY)
-
-  const reload = async () => {
-    //get data from backend 
-    await queryImg()
-    console.log(imgData)
-    const reloadlink = imgData.image[0].link
-    // const reloadlink = 'data:image/png;base64,'+ imgData.image[imgData.image.length-2].link
-
-    const canvas = document.getElementById('canvas');
-    const canvas_fig = document.getElementById('canvas_fig');
-    const canvas_out = document.getElementById('canvas_out');
-    
-    const context = canvas.getContext('2d')
-    const context_fig = canvas_fig.getContext('2d');
-    const context_out = canvas_out.getContext('2d')
-    
-    const image = new Image();
-    image.src = reloadlink;
-
-    image.onload = () => {
-      context.clearRect(0, 0, canvas.width, canvas.height)
-      context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
-      context_out.clearRect(0, 0, context_out.width, context_out.height)
-
-      canvas_fig.width = canvas.width = context_out.width = image.width;
-      canvas_fig.height = canvas.height = context_out.width = image.height;
-      context_fig.drawImage(image, 0, 0, canvas_fig.width, canvas_fig.height);
-
-    }
-  }
 
 
   return (<>
@@ -657,7 +623,6 @@ const Edit = () => {
             style={{ display: 'none' }} onChange={onChangeFile}
           />
 
-          <button onClick={reload}>Reload</button>
         </FunctionWrapper>
 
       </TopBar>
