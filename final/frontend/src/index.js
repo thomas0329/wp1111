@@ -7,8 +7,13 @@ import { ComicProvider } from './containers/hooks/useComic';
 import { ApolloProvider, ApolloClient, createHttpLink, InMemoryCache } from '@apollo/client';
 import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
 
+const URI = 
+  process.env.NODE_ENV === "production"
+    ? '/'
+    : 'http://localhost:4000'
+
 const httpLink = createHttpLink({
-  uri: 'http://localhost:4000'
+  uri: URI
 });
 
 const uploadLink = createUploadLink({ uri: 'http://localhost:4000' });
