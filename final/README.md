@@ -20,6 +20,7 @@
     yarn server
 3. 在 'frontend' folder 執行:
     yarn start
+(Reload展示圖片的功能為login時至少有一張圖片才有效)
 
 ### 網頁流程
 1. 於登入頁面隨意按下右鍵進入註冊/登入頁面
