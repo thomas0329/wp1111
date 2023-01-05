@@ -29,5 +29,5 @@
     
 ### 組員負責項目
 1. B08901209 林鈺翔    deployment、logins、schema、前端架構、FB貼文
-2. R11725049 李宜臻    前端畫布、美化頁面、影片demo
-3. R09B48004 蕭如秀    deployment、template架構、python和js的結合、README
+2. R11725049 李宜臻    前端畫布、照片儲存、美化頁面、影片demo
+3. R09B48004 蕭如秀    deployment、template架構、python和js的結合（照片儲存、不同語言間的照片檔案轉換、python連接db）、README
