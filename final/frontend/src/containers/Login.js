@@ -16,6 +16,9 @@ const Wrapper = styled.div`
 `
 
 const LoginBox = styled.div`
+  background-color: #D6E6ED;
+  width: 70%;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -26,7 +29,8 @@ const LoginBox = styled.div`
 
   h2, h3{
     // width: 100%;
-    margin-top: 3px;
+    // color: #50545D;
+    margin-top: 10px;
     margin-bottom: 3px;
   }
 
@@ -35,6 +39,9 @@ const LoginBox = styled.div`
   }
   h3{
     margin-left: 5px
+  }
+  button{
+    margin-bottom: 10px;
   }
 `
 
@@ -79,11 +86,12 @@ const Login = () => {
 
   return (<>
     <Title style = {{ top: '50px'}}/>
-    <Wrapper style={{ height: '100%', width: '60%' }} >
-      <LoginBox style={{backgroundColor: '#D6E6ED', height: '50%'}}>
-        <h2 className="mv3" style={{ color: '#50545D' }}>
+    <Wrapper style={{ height: '100%', width: '80%' }} >
+      {/* <LoginBox style={{backgroundColor: '#D6E6ED', width: '70%'}}> */}
+      <LoginBox>
+        <h1 className="mv3" style={{ color: '#50545D' }}>
           {formState.login ? 'Login' : 'Sign Up'}
-        </h2>
+        </h1>
 
         <div className="flex flex-column" style={{width: '100%'}}>
           {!formState.login && (

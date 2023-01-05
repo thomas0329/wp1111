@@ -73,9 +73,11 @@ const CanvasWrapper = styled.div`
 const ButtonWrapper = styled.div`
   display: flex;
   align-item: center;
-  // justify-content: space-around;
+  justify-content: center;
+  align-items: center;
+
   height: 50px;
-  width: 50%
+  width: 50%;
 `
 
 const handleClickImg = (imgs) => {
@@ -142,8 +144,8 @@ const Gallery = () => {
 
       <ButtonWrapper>
 
-        <button onClick={reload}>reload</button>
-        <button onClick={goCreate}>Back to Create</button>
+        <button className = 'gallery button' onClick={reload}>Reload</button>
+        <button className = 'gallery button' onClick={goCreate}>Back to Create</button>
 
       </ButtonWrapper>
       <CanvasWrapper>

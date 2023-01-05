@@ -59,6 +59,7 @@
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  transition-duration:0.5s;
 }
 
 .button:hover {
@@ -99,10 +100,9 @@ input[type = radio]{
   cursor: pointer;
 }
 
-label + [type=radio]:checked{
-  outline: 2px solid #E3BCA2;
-}
 
 [type=radio]:checked + img{
-  outline: 2px solid #E3BCA2;
+  /* outline: 2px solid #E3BCA2; */
+  background-color: #D6E6ED;
 }
+

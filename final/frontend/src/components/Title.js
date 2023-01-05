@@ -13,7 +13,7 @@ const Wrapper = styled.div`
 const Title = () => {
 	return (
 		<Wrapper>
-			<h1>Comic Creator!</h1>
+			<h1>DOOODLER</h1>
 		</Wrapper>
 	);
 };

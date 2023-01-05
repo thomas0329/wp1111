@@ -28,9 +28,8 @@ const CanvasWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 100%
-  position: relative
-  margin-top: 20px
+  position: relative;
+  margin: 0px
   
   canvas{
     position: absolute;
@@ -43,12 +42,11 @@ const TopBar = styled.div`
   display: flex;
   flex-wrap: wrap;
   align-items: center; 
-  justify-content: center;
+  justify-content: space-evenly;
 `
 
 const DrawWrapper = styled.div`
   display: flex;
-  width:150%;
 `
 
 const ToolWrapper = styled.div`
@@ -61,11 +59,11 @@ const ToolWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  // margin-right: 10px
+  margin-right: 10px;
 
   label{
-    width: 30px;
-    height: 30px;
+    width: 35px;
+    height: 35px;
     // background-color: #D6E6ED;
     border-radius: 5px;
 
@@ -596,6 +594,18 @@ const Edit = () => {
 
       <TopBar>
         <FunctionWrapper>
+        <div style={{marginRight: '20px'}}>
+
+          <button className='function button' onClick={undo}>
+            <img src="icons/undo.svg" width = '15px'/>
+          </button>
+
+          <button className='function button' onClick={redo}>
+            <img src="icons/redo.svg" width = '15px'/>
+          </button>
+
+        </div>
+        <div>
 
           <button className='function button'>
             <label htmlFor="fileinput">Upload</label>
@@ -604,8 +614,9 @@ const Edit = () => {
             style={{ display: 'none' }} onChange={onChangeFile}
           />
 
-          <button className='function button' onClick={undo}>Undo</button>
-          <button className='function button' onClick={redo}>Redo</button>
+
+        </div>
+
 
           {/* <button className = 'function button'onClick={convert}>Convert</button> */}
           <button className='function button' onClick={download}>Download</button>
@@ -619,6 +630,7 @@ const Edit = () => {
       <DrawWrapper>
 
         <ToolWrapper>
+
           <label htmlFor="selection">
             <input
               type='radio'
@@ -627,7 +639,6 @@ const Edit = () => {
               onChange={() => setTool('selection')}
             />
             <img src='icons/pointer.svg' width='15px' />
-            {/* Selection */}
           </label>
 
 
@@ -719,16 +730,16 @@ const Edit = () => {
         </ToolWrapper>
         <CanvasWrapper>
           <canvas id='canvas_out'
-            width='500px'
+            width='650px'
             height='500px'
-            style={{ position: 'absolute' }}
+            style={{ position: 'absolute'}}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
           >Canvas_out</canvas>
 
           <canvas id='canvas_fig'
-            width='500px'
+            width='650px'
             height='500px'
             style={{ backgroundColor: '#fff' }}
             onMouseDown={handleMouseDown}
@@ -737,9 +748,9 @@ const Edit = () => {
           >Canvas_fig</canvas>
 
           <canvas id='canvas'
-            width='500px'
+            width='650px'
             height='500px'
-            style={{ position: 'absolute' }}
+            style={{ position: 'absolute'}}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
