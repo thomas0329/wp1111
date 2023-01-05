@@ -18,7 +18,7 @@ import { useHistory } from "./hooks/useHistory";
 import { useComic } from "./hooks/useComic";
 
 const Wrapper = styled.div`
-  width: 50%
+  width: 60%
   display: flex;
   flex-wrap: wrap;
   align-items: center; 
@@ -33,24 +33,55 @@ const CanvasWrapper = styled.div`
   margin-top: 20px
   
   canvas{
-    position: absolute
+    position: absolute;
   }
 `
 
 const TopBar = styled.div`
   width: 100%;
-  height: 50px;
+  height: 80px;
   display: flex;
   flex-wrap: wrap;
   align-items: center; 
   justify-content: center;
 `
-const ToolWrapper = styled.div`
-  position: relative;
-  margin-right: 10px;
+
+const DrawWrapper = styled.div`
+  display: flex;
+  width:150%;
 `
 
+const ToolWrapper = styled.div`
+  width: 50px;
+  height: 230px;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  // margin-right: 10px
+
+  label{
+    width: 30px;
+    height: 30px;
+    // background-color: #D6E6ED;
+    border-radius: 5px;
+
+    margin: 8px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+  }
+
+
+`
 const FunctionWrapper = styled.div`
+  display: flex;
   position: relative;
   align-items: center;
   justify-content: space-between;
@@ -298,10 +329,10 @@ const upload = (event) => {
         image.onload = () => {
           context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
           context.clearRect(0, 0, canvas.width, canvas.height)
-          
+
           let scale = 1
-          const maxlen = 800
-          
+          const maxlen = 700
+
           if (image.width > maxlen || image.height > maxlen) {
             if (image.width > image.height) {
               scale = maxlen / image.width
@@ -555,18 +586,96 @@ const Edit = () => {
     const fileLink = imglink.getAttribute('href')
     // console.log('filelink: ', fileLink)
     // console.log('user.email: ', user.email);  // ok
-    await singleUpload({ variables: { link: fileLink, file: fileData, userEmail: user.email} });
+    await singleUpload({ variables: { link: fileLink, file: fileData, userEmail: user.email } });
   }
-
-  const [queryImg, { loading, error, data: imgData, subscribeToMore }] = useLazyQuery(IMAGE_QUERY)
 
 
   return (<>
     <Title />
     <Wrapper>
+
       <TopBar>
+        <FunctionWrapper>
+
+          <button className='function button'>
+            <label htmlFor="fileinput">Upload</label>
+          </button>
+          <input id='fileinput' type="file" accept="image/*" onClick={upload}
+            style={{ display: 'none' }} onChange={onChangeFile}
+          />
+
+          <button className='function button' onClick={undo}>Undo</button>
+          <button className='function button' onClick={redo}>Redo</button>
+
+          {/* <button className = 'function button'onClick={convert}>Convert</button> */}
+          <button className='function button' onClick={download}>Download</button>
+          <button className='function button' onClick={finishedit}>Finish</button>
+
+
+
+        </FunctionWrapper>
+
+      </TopBar>
+      <DrawWrapper>
+
         <ToolWrapper>
-          <input
+          <label htmlFor="selection">
+            <input
+              type='radio'
+              id='selection'
+              checked={tool === 'selection'}
+              onChange={() => setTool('selection')}
+            />
+            <img src='icons/pointer.svg' width='15px' />
+            {/* Selection */}
+          </label>
+
+
+          <label htmlFor="line">
+            <input
+              type='radio'
+              id='line'
+              checked={tool === 'line'}
+              onChange={() => setTool('line')}
+            />
+            <img src='icons/slash.svg' width='20px' />
+          </label>
+
+          <label htmlFor="rectangle">
+            <input
+              type='radio'
+              id='rectangle'
+              checked={tool === 'rectangle'}
+              onChange={() => setTool('rectangle')}
+            />
+            <img src='icons/rectangle.svg' width='20px' />
+          </label>
+
+          <label htmlFor="circle">
+            <input
+              type='radio'
+              id='circle'
+              checked={tool === 'circle'}
+              onChange={() => setTool('circle')}
+            />
+            <img src='icons/circle.svg' width='20px' />
+          </label>
+
+          <label htmlFor="pencil">
+            <input
+              type='radio'
+              id='pencil'
+              checked={tool === 'pencil'}
+              onChange={() => setTool('pencil')}
+            />
+
+            <img src='icons/pencil.svg' width='20px' />
+          </label>
+
+
+
+
+          {/* <input
             type='radio'
             id='selection'
             checked={tool === 'selection'}
@@ -604,56 +713,39 @@ const Edit = () => {
             checked={tool === 'pencil'}
             onChange={() => setTool('pencil')}
           />
-          <label htmlFor="pencil">Pencil</label>
+          <label htmlFor="pencil">Pencil</label> */}
 
 
         </ToolWrapper>
-        <FunctionWrapper>
-          <button onClick={undo}>Undo</button>
-          <button onClick={redo}>Redo</button>
+        <CanvasWrapper>
+          <canvas id='canvas_out'
+            width='500px'
+            height='500px'
+            style={{ position: 'absolute' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          >Canvas_out</canvas>
 
-          <button onClick={convert}>Convert</button>
-          <button onClick={download}>Download</button>
-          <button onClick={finishedit}>Finish</button>
+          <canvas id='canvas_fig'
+            width='500px'
+            height='500px'
+            style={{ backgroundColor: '#fff' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          >Canvas_fig</canvas>
 
-          <button>
-            <label htmlFor="fileinput">Upload</label>
-          </button>
-          <input id='fileinput' type="file" accept="image/*" onClick={upload}
-            style={{ display: 'none' }} onChange={onChangeFile}
-          />
-
-        </FunctionWrapper>
-
-      </TopBar>
-      <CanvasWrapper>
-        <canvas id='canvas_out'
-          width='500px'
-          height='500px'
-          style={{ position: 'absolute' }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-        >Canvas_out</canvas>
-
-        <canvas id='canvas_fig'
-          width='500px'
-          height='500px'
-          style={{ backgroundColor: '#fff' }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-        >Canvas_fig</canvas>
-
-        <canvas id='canvas'
-          width='500px'
-          height='500px'
-          style={{ position: 'absolute' }}
-          onMouseDown={handleMouseDown}
-          onMouseMove={handleMouseMove}
-          onMouseUp={handleMouseUp}
-        >Canvas3</canvas>
-      </CanvasWrapper>
+          <canvas id='canvas'
+            width='500px'
+            height='500px'
+            style={{ position: 'absolute' }}
+            onMouseDown={handleMouseDown}
+            onMouseMove={handleMouseMove}
+            onMouseUp={handleMouseUp}
+          >Canvas3</canvas>
+        </CanvasWrapper>
+      </DrawWrapper>
     </Wrapper>
   </>);
 

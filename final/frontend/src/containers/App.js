@@ -21,10 +21,10 @@ const App = () => {
             <Route path="/" element={<MainPage/>} />
             <Route path="/login" element={<Login/>} />
             <Route path="/template" element={<Template name={user.name}/>} />
-            <Route path="/block" element={<Block template={currentTemplate}/>} />
+            {/* <Route path="/block" element={<Block template={currentTemplate}/>} /> */}
             <Route path="/edit" element={<Edit/>} />
-            <Route path="/transform" element={<Transform/>} />
-            <Route path="/work" element={<Work/>} />
+            {/* <Route path="/transform" element={<Transform/>} /> */}
+            {/* <Route path="/work" element={<Work/>} /> */}
             <Route path='/gallery' element={<Gallery/>} />
           </Routes>
     </Router>

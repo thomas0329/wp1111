@@ -6,7 +6,7 @@ const Wrapper = styled.div`
 	justify-content: center;
 	h1{
 			margin: 0;
-			margin-right: 20px;
+			// margin-right: 20px;
 			font-size: 3em;
 	}
 `

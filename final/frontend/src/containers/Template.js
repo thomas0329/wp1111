@@ -22,7 +22,14 @@ const ButtonWrapper = styled.div`
 	height: 100px;
 	display: flex;
 	justify-content: space-evenly;
+`
 
+const Wrapper = styled.div`
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
 `
 
 const Template = ({ name }) => {
@@ -45,11 +52,12 @@ const Template = ({ name }) => {
 	}
 	return (
 		<>
+		<Wrapper>
 			<Title />
-			<h4>Hi, {name}</h4>
+			<h2>Hi, {name}</h2>
 			<ButtonWrapper>
-				<button onClick={goCreate}>Create new</button>
-				<button onClick={handleNext}>My Gallery</button>
+				<button className = 'button'onClick={goCreate}>Create new</button>
+				<button className = 'button'onClick={handleNext}>My Gallery</button>
 			</ButtonWrapper>
 
 			{/* <h1>Choose a template</h1>
@@ -64,6 +72,7 @@ const Template = ({ name }) => {
 					<img src='templates/3.png' />
 				</BlockPreview>
 			</BlockWrapper> */}
+		</Wrapper>
 		</>
 	);
 }
