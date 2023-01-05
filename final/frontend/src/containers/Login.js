@@ -33,6 +33,8 @@ const Login = () => {
       // localStorage.setItem(AUTH_TOKEN, login.token);
       console.log('data.login: ', data.login);
       setUser({name: data.login.name, email: data.login.email});
+      console.log(data.login.name);
+      console.log(data.login.email);
       navigate('/template');
     }
   });
