@@ -1,11 +1,11 @@
 # 111-1 Web programming final
 ### Group 75 dooodle
 1. B08901209 林鈺翔
-2.R11725049 李宜臻
+2. R11725049 李宜臻
 3. R09B48004 蕭如秀
 
 ## Localhost 安裝與測試詳細步驟
-###安裝
+### 安裝
 1. 下載並解壓縮資料夾
 2. 在local root folder執行:
     yarn install
@@ -28,6 +28,6 @@
     如有帳號則輸入帳號密碼進行註冊
     
 ### 組員負責項目
-    1. B08901209 林鈺翔 deployment、logins、schema
-    2. R11725049 李宜臻 前端畫布、美化頁面
-    3. R09B48004 蕭如秀 deployment、python和js的結合
+1. B08901209 林鈺翔 deployment、logins、schema
+2. R11725049 李宜臻 前端畫布、美化頁面
+3. R09B48004 蕭如秀 deployment、python和js的結合
