@@ -9,8 +9,8 @@ import createUploadLink from "apollo-upload-client/public/createUploadLink.js";
 
 const URI = 
   process.env.NODE_ENV === "production"
-    ? 'http://localhost:4000'
-    : '/'
+    ? '/'
+    : 'http://localhost:4000'
 
 console.log('URI: ', URI);
 
