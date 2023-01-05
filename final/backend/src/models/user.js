@@ -6,8 +6,8 @@ const UserSchema = new Schema({
 	password: String,
 	Image: [{
 		name: String,
-  	link: Buffer,
-  	img: Buffer
+  	link: String,
+  	img: String
 	}]
 });
 const UserModel =

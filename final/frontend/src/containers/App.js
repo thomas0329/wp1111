@@ -8,6 +8,7 @@ import { useComic } from './hooks/useComic';
 import Block from './Block';
 import Edit from './Edit';
 import Work from './Work';
+import Gallery from './Gallery';
 
 import Transform from './Transform';
 
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/edit" element={<Edit/>} />
             <Route path="/transform" element={<Transform/>} />
             <Route path="/work" element={<Work/>} />
+            <Route path='/gallery' element={<Gallery/>} />
           </Routes>
     </Router>
   );

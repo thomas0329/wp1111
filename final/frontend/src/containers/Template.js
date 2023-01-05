@@ -17,6 +17,13 @@ const BlockPreview = styled.div`
 		height: 100%;
 	}
 `
+const ButtonWrapper = styled.div`
+	width: 100%
+	height: 100px;
+	display: flex;
+	justify-content: space-evenly;
+
+`
 
 const Template = ({ name }) => {
 
@@ -27,12 +34,25 @@ const Template = ({ name }) => {
 		setCurrentTemplate(event.currentTarget.id);
 		navigate('/block');
 	}
-	
+
+	const goCreate = () => {
+		navigate('/edit')
+	}
+
+
+	const handleNext = () => {
+		navigate('/gallery')
+	}
 	return (
 		<>
 			<Title />
 			<h4>Hi, {name}</h4>
-			<h1>Choose a template</h1>
+			<ButtonWrapper>
+				<button onClick={goCreate}>Create new</button>
+				<button onClick={handleNext}>My Gallery</button>
+			</ButtonWrapper>
+
+			{/* <h1>Choose a template</h1>
 			<BlockWrapper>
 				<BlockPreview id='four-frame' onClick={handleClick}>
 					<img src='templates/1.png' />
@@ -43,7 +63,7 @@ const Template = ({ name }) => {
 				<BlockPreview id='three-frame' onClick={handleClick}>
 					<img src='templates/3.png' />
 				</BlockPreview>
-			</BlockWrapper>
+			</BlockWrapper> */}
 		</>
 	);
 }

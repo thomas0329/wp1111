@@ -1,21 +1,15 @@
-import { ImageModel } from '../models/image';
-import { UserModel } from '../models/user'
-
+import UserModel from '../models/user';
 
 const Query = {
-	image: async (parent, args ,{ ImageModel }) => {
-		try {
-			const work = await ImageModel.find()
-			return work
+	image: async (parent, { user } ) => {
+		// console.log(user)
+		const work = await UserModel.findOne({ user: user })
+		// console.log(work)
+		return work
 
-		}
-		catch (e) {
-			console.log(e)
-		}
 	},
 
-	user: async (parent, { id, name, email }, {UserModel}) => {
-		console.log(name)
+	user: async (parent, { id, name, email }) => {
 		const user = await UserModel.findOne({ name: name })
 		return user
 	}

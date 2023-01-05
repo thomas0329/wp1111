@@ -2,9 +2,9 @@
 import mongoose, { Schema } from "mongoose";
 
 const ImageSchema = new Schema({
-  name: String,
-  link: Buffer,
-  img: Buffer
+  filename: String,
+  link: String,
+  img: String //改? 要讓yoga吃到要用string
 });
 
 const ImageModel =

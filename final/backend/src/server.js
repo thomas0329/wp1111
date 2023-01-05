@@ -32,6 +32,8 @@ const yoga = createYoga({
 });
 
 const app = express();
+app.use('/', yoga);
+
 if (process.env.NODE_ENV === "development") {
   console.log('development mode');
   app.use(cors());
@@ -44,7 +46,7 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-app.use('/', yoga);
+// app.use('/', yoga);
 
 // const server = createServer(yoga);
 

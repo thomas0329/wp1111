@@ -10,9 +10,11 @@ import { useLayoutEffect, useState, useEffect, useRef } from "react";
 import rough from 'roughjs/bundled/rough.esm'
 import getStroke from "perfect-freehand";
 import styled from "styled-components";
-import { useMutation } from "@apollo/client";
-import { SINGLE_UPLOAD_MUTATION } from '../graphql';
+import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
 import { useNavigate } from 'react-router-dom';
+import { SINGLE_UPLOAD_MUTATION } from '../graphql';
+import { IMAGE_QUERY } from '../graphql/queries'
+import { useHistory } from "./hooks/useHistory";
 import { useComic } from "./hooks/useComic";
 
 const Wrapper = styled.div`
@@ -194,31 +196,6 @@ const resizedCoordinates = (clientX, clientY, position, coordinates) => {
 };
 
 
-const useHistory = (initialState) => {
-  const [index, setIndex] = useState(0)
-
-  const [history, setHistory] = useState([initialState])
-
-  const setState = (action, overwrite = false) => {
-    const newState = typeof action === 'function' ? action(history[index]) : action;
-
-    if (overwrite) {
-      const historyCopy = [...history];
-      historyCopy[index] = newState;
-      setHistory(historyCopy)
-    } else {
-      const updateState = [...history].slice(0, index + 1)
-      setHistory([...updateState, newState])
-      setIndex(prevState => prevState + 1)
-    }
-  }
-
-  const undo = () => index > 0 && setIndex(prevState => prevState - 1)
-  const redo = () => index < history.length - 1 && setIndex(prevState => prevState + 1)
-
-
-  return [history[index], setState, undo, redo];
-}
 
 const getSvgPathFromStroke = (points, closed = true) => {
   const len = points.length
@@ -274,32 +251,45 @@ const average = (a, b) => (a + b) / 2
 const adjustmentRequired = type => ['line', 'rectangle'].includes(type)
 
 const mergecanvas = () => {
-  //把兩個canvas合併成一個
+  //把兩個canvas合併到第三個用來輸出的畫布
   const canvas = document.getElementById('canvas');
   const canvas_fig = document.getElementById('canvas_fig')
-  canvas_fig.getContext('2d').drawImage(canvas, 0, 0)
+  const canvas_out = document.getElementById('canvas_out')
+
+  const context_out = canvas_out.getContext('2d')
+  context_out.drawImage(canvas_fig, 0, 0)
+  context_out.drawImage(canvas, 0, 0)
   const link = document.createElement("a"); // creating <a> element
   link.download = `${Date.now()}.jpg`; // passing current date as link download value
-  link.href = canvas_fig.toDataURL(); // passing canvasData as link href value
+  link.href = canvas_out.toDataURL(); // passing canvasData as link href value
   return link
 }
 
 const download = () => {
-  const link = mergecanvas()
+  const link = mergecanvas();
   link.click(); // clicking link to download image
+  const canvas_out = document.getElementById('canvas_out');
+  const context_out = canvas_out.getContext('2d');
+  context_out.clearRect(0, 0, canvas_out.width, canvas_out.height);
   return link
 }
+
+
 const upload = (event) => {
   //有兩層canvas，canvas_fig放圖片，canvas放畫的東西
   const fileInput = document.getElementById('fileinput');
-  const canvas_fig = document.getElementById('canvas_fig');
+
   const canvas = document.getElementById('canvas');
+  const canvas_fig = document.getElementById('canvas_fig');
+  const canvas_out = document.getElementById('canvas_out')
+
+  const context = canvas.getContext('2d')
   const context_fig = canvas_fig.getContext('2d');
   fileInput.addEventListener('change', () => {
 
     if (event.target.files) {
       const file = event.target.files[0];
-      // console.log(file)
+
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onloadend = element => {
@@ -307,10 +297,11 @@ const upload = (event) => {
         image.src = element.target.result;
         image.onload = () => {
           context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
-
+          context.clearRect(0, 0, canvas.width, canvas.height)
+          
           let scale = 1
           const maxlen = 800
-
+          
           if (image.width > maxlen || image.height > maxlen) {
             if (image.width > image.height) {
               scale = maxlen / image.width
@@ -318,10 +309,10 @@ const upload = (event) => {
               scale = maxlen / image.height
             }
           }
-          canvas_fig.width = canvas.width = image.width * scale;
-          canvas_fig.height = canvas.height = image.height * scale;
+          canvas_fig.width = canvas.width = canvas_out.width = image.width * scale;
+          canvas_fig.height = canvas.height = canvas_out.height = image.height * scale;
           context_fig.drawImage(image, 0, 0, canvas_fig.width, canvas_fig.height);
-          context_fig.drawImage(canvas, 0, 0)
+
         }
 
       }
@@ -539,16 +530,8 @@ const Edit = () => {
   }
 
 
-  const handleBlur = event => {
-    const { id, x1, y1, type } = selectedElement;
-    setAction('none')
-    setSelectedElement(null)
-    updateElement(id, x1, y1, null, null, type, { text: event.target.value })
-    return
-  }
-
   const [fileData, setFileData] = useState(null);
-  const [fileLink, setFileLink] = useState('')
+  // const [fileLink, setFileLink] = useState('')
 
   const convert = () => {
     saveImage();
@@ -556,49 +539,57 @@ const Edit = () => {
 
   const finishedit = () => {
     saveImage();
-    navigate('/block');
+    navigate('/gallery')
   }
 
   const onChangeFile = e => {
-    const imglink = mergecanvas()
-    setFileLink(imglink.getAttribute('href'))
+
     setFileData(e.target.files[0]);
   };
 
   const [singleUpload] = useMutation(SINGLE_UPLOAD_MUTATION);
 
   const saveImage = async () => {
-    console.log('filedata: ', fileData);  // ok
-    console.log('filelink: ', fileLink)
-    console.log('user.email: ', user.email);  // ok
+    // console.log('filedata: ', fileData);  // ok
+    const imglink = mergecanvas()
+    // console.log(imglink)
+    // setFileLink(imglink.getAttribute('href'))
+    const fileLink = imglink.getAttribute('href')
+    // console.log('filelink: ', fileLink)
+    console.log(user)
+    // console.log('user.email: ', user.email);  // ok
+    // console.log(fileLink)
     await singleUpload({ variables: { link: fileLink, file: fileData, userEmail: user.email} });
   }
 
-  const reload = () => {
-    //get data from backend (現在是假的)
-    const canvas_fig = document.getElementById('canvas_fig');
+  const [queryImg, { loading, error, data: imgData, subscribeToMore }] = useLazyQuery(IMAGE_QUERY)
+
+  const reload = async () => {
+    //get data from backend 
+    await queryImg()
+    console.log(imgData)
+    const reloadlink = imgData.image[0].link
+    // const reloadlink = 'data:image/png;base64,'+ imgData.image[imgData.image.length-2].link
+
     const canvas = document.getElementById('canvas');
+    const canvas_fig = document.getElementById('canvas_fig');
+    const canvas_out = document.getElementById('canvas_out');
+    
+    const context = canvas.getContext('2d')
     const context_fig = canvas_fig.getContext('2d');
+    const context_out = canvas_out.getContext('2d')
+    
     const image = new Image();
-    // console.log(fileLink)
-    image.src = fileLink  //後端的link送到這裡
+    image.src = reloadlink;
+
     image.onload = () => {
+      context.clearRect(0, 0, canvas.width, canvas.height)
       context_fig.clearRect(0, 0, canvas_fig.width, canvas_fig.height)
+      context_out.clearRect(0, 0, context_out.width, context_out.height)
 
-      let scale = 1
-      const maxlen = 800
-
-      if (image.width > maxlen || image.height > maxlen) {
-        if (image.width > image.height) {
-          scale = maxlen / image.width
-        } else {
-          scale = maxlen / image.height
-        }
-      }
-      canvas_fig.width = canvas.width = image.width * scale;
-      canvas_fig.height = canvas.height = image.height * scale;
+      canvas_fig.width = canvas.width = context_out.width = image.width;
+      canvas_fig.height = canvas.height = context_out.width = image.height;
       context_fig.drawImage(image, 0, 0, canvas_fig.width, canvas_fig.height);
-      context_fig.drawImage(canvas, 0, 0)
 
     }
   }
@@ -649,13 +640,6 @@ const Edit = () => {
           />
           <label htmlFor="pencil">Pencil</label>
 
-          {/* <input
-          type='radio'
-          id='text'
-          checked={tool === 'text'}
-          onChange={() => setTool('text')}
-        />
-        <label htmlFor="text">Text</label> */}
 
         </ToolWrapper>
         <FunctionWrapper>
@@ -674,44 +658,36 @@ const Edit = () => {
           />
 
           <button onClick={reload}>Reload</button>
-
-          {/* <button onClick={upload}>Upload</button> */}
         </FunctionWrapper>
 
-        {action === "writing" ? (
-          <textarea
-            ref={textAreaRef}
-            // onBlur={handleBlur}
-            style={{
-              position: "fixed",
-              top: selectedElement.y1,
-              left: selectedElement.x1,
-
-            }}
-          />
-        ) : null}
       </TopBar>
       <CanvasWrapper>
-        <canvas id='canvas'
-          // width={window.innerWidth}
-          // height={window.innerHeight}
+        <canvas id='canvas_out'
           width='500px'
           height='500px'
           style={{ position: 'absolute' }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-        >Canvas</canvas>
+        >Canvas_out</canvas>
+
         <canvas id='canvas_fig'
-          // width={window.innerWidth}
-          // height={window.innerHeight}
           width='500px'
           height='500px'
           style={{ backgroundColor: '#fff' }}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
-        >Canvas</canvas>
+        >Canvas_fig</canvas>
+
+        <canvas id='canvas'
+          width='500px'
+          height='500px'
+          style={{ position: 'absolute' }}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleMouseUp}
+        >Canvas3</canvas>
       </CanvasWrapper>
     </Wrapper>
   </>);
